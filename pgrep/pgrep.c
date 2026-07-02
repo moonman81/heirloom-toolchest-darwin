@@ -70,13 +70,21 @@ static const char sccsid[] USED = "@(#)pgrep.sl	1.24 (gritter) 1/12/07";
 #endif	/* !__linux__, !__NetBSD__, !__OpenBSD__ */
 
 #if defined (__NetBSD__) || defined (__OpenBSD__) || defined (__APPLE__)
-#include <kvm.h>
 #include <sys/param.h>
 #include <sys/sysctl.h>
 #if defined (__APPLE__)
-#include <mach/mach_types.h>
-#include <mach/task_info.h>
-#endif /* __APPLE__ */
+/*
+ * Darwin port: <kvm.h> was originally in this block, but Darwin does
+ * not ship a kvm(3) library — macOS enumerates processes via libproc
+ * (proc_listpids/proc_pidinfo) or sysctl KERN_PROC. Include the Mach
+ * umbrella <mach/mach.h> so mach_task_self(), task_info(),
+ * mach_port_deallocate() all resolve. -- Heirloom Darwin port.
+ */
+#include <mach/mach.h>
+#include <libproc.h>
+#else	/* !__APPLE__ */
+#include <kvm.h>
+#endif	/* __APPLE__ */
 #define	proc	process
 #undef	p_pgid
 #define	p_pgid	p__pgid

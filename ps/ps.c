@@ -134,9 +134,18 @@ static const char cacheid[] = "@(#)/tmp/ps_cache	2.114 (gritter) 1/12/07";
 #include        <sys/sysctl.h>
 #include        <sys/mount.h>
 #include	<sys/resource.h>
-#include	<mach/mach_types.h>
-#include	<mach/task_info.h>
+/*
+ * Darwin port: the umbrella <mach/mach.h> pulls in every function
+ * prototype ps.c uses at runtime (mach_task_self, task_info,
+ * task_threads, thread_info, mach_port_deallocate). The former
+ * per-file includes (<mach/mach_types.h>, <mach/task_info.h>) provide
+ * only the types and constants. <mach/shared_memory_server.h> is
+ * still present in current SDKs but marked deprecated; kept for the
+ * legacy printout branch. -- Heirloom Darwin port.
+ */
+#include	<mach/mach.h>
 #include	<mach/shared_memory_server.h>
+#include	<libproc.h>
 #define	proc	process
 #undef	p_pgid
 #else	/* SVR4 */
@@ -152,7 +161,15 @@ static const char cacheid[] = "@(#)/tmp/ps_cache	2.114 (gritter) 1/12/07";
 #endif	/* SVR4 */
 #include	<wchar.h>
 #include	<wctype.h>
-#ifndef	TIOCGWINSZ
+/*
+ * Darwin port: <termios.h> defines TIOCGWINSZ but not ioctl(). The
+ * '#ifndef TIOCGWINSZ' guard would otherwise skip <sys/ioctl.h> and
+ * leave ioctl() undeclared. Include unconditionally on Apple.
+ * -- Heirloom Darwin port.
+ */
+#if defined(__APPLE__)
+#include	<sys/ioctl.h>
+#elif !defined(TIOCGWINSZ)
 #include	<sys/ioctl.h>
 #endif
 

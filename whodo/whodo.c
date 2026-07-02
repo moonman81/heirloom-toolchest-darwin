@@ -62,14 +62,21 @@ static const char sccsid[] USED = "@(#)whodo.sl	1.42 (gritter) 1/12/07";
 
 #if defined (__NetBSD__) || defined (__OpenBSD__) || defined (__APPLE__)
 #if defined (__APPLE__)
-#include	<mach/mach_types.h>
-#include	<mach/task_info.h>
+/*
+ * Darwin port: <mach/mach.h> umbrella brings in the function prototypes
+ * whodo.c calls (mach_task_self, task_info, mach_port_deallocate). The
+ * previous per-file includes provided only types + constants. Add
+ * <libproc.h> for the proc-listing helpers used further down the
+ * Darwin branch. -- Heirloom Darwin port.
+ */
+#include	<mach/mach.h>
+#include	<libproc.h>
 #else	/* !__APPLE__ */
 #include	<kvm.h>
 #endif /* !__APPLE__ */
 #include	<sys/param.h>
 #include	<sys/sysctl.h>
-#endif /* __NetBSD__, __NetBSD__, __APPLE__ */
+#endif /* __NetBSD__, __OpenBSD__, __APPLE__ */
 
 #ifdef	__hpux
 #include	<sys/param.h>
