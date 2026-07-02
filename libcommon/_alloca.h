@@ -22,6 +22,18 @@
 /*	Sccsid @(#)_alloca.h	1.5 (gritter) 1/22/06	*/
 
 #if defined (__FreeBSD__) || defined (__NetBSD__) || defined (__OpenBSD__) || \
-	defined (__DragonFly__) || defined (__APPLE__)
+	defined (__DragonFly__)
 #include <stdlib.h>
-#endif	/* __FreeBSD__, __NetBSD__, __OpenBSD__, __DragonFly__, __APPLE__ */
+#endif	/* __FreeBSD__, __NetBSD__, __OpenBSD__, __DragonFly__ */
+
+#if defined (__APPLE__)
+/*
+ * Darwin port: shim originally assumed Darwin declared alloca(3) in
+ * <stdlib.h>. Modern macOS SDKs (Xcode 12+) put the declaration back
+ * in the system <alloca.h> under _DARWIN_C_SOURCE, so <stdlib.h> alone
+ * no longer covers it. Delegate to the system <alloca.h> via
+ * include_next; -D_DARWIN_C_SOURCE is set in build/mk.config.
+ * -- Heirloom Darwin port.
+ */
+#include_next <alloca.h>
+#endif	/* __APPLE__ */
