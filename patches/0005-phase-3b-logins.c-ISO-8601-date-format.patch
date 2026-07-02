@@ -1,0 +1,43 @@
+From bba8eb873a92e5a3482122284a866ddb67eeb573 Mon Sep 17 00:00:00 2001
+From: Warwick Brown <me@moonman.me.uk>
+Date: Thu, 2 Jul 2026 17:27:18 +0100
+Subject: [PATCH 5/6] phase 3b: logins.c ISO 8601 date format
+
+Per PORT.md Y2K finding: strftime('%m%d%y') -> strftime('%Y-%m-%d').
+Widen buffer from 7 to 11 bytes to fit 'YYYY-MM-DD' + NUL. logins(1)
+output is human-facing not machine-consumed, so this is a pure
+display change: no on-disk / on-wire format impact, no legacy
+artefact incompatibility.
+---
+ logins/logins.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/logins/logins.c b/logins/logins.c
+index b144b0c..f08822b 100644
+--- a/logins/logins.c
++++ b/logins/logins.c
+@@ -159,10 +159,19 @@ out(const struct login *lp)
+ 			lp->l_gecos);
+ 	if (xflag) {
+ 		time_t tchg;
+-		char datebuf[7];
++		/*
++		 * ISO 8601 upgrade: original format was "%m%d%y" (MMDDYY,
++		 * Y2069-limited). Widen buffer and switch to "%Y-%m-%d"
++		 * (YYYY-MM-DD) — unambiguous across locales, sortable,
++		 * and Y10000-safe. -logins(1)- output is human-facing not
++		 * machine-consumed, so this is a display change with no
++		 * on-disk / on-wire impact. -- Heirloom Darwin port
++		 * (PORT.md Y2K finding).
++		 */
++		char datebuf[11];	/* "YYYY-MM-DD" + NUL */
+ 
+ 		tchg = lp->l_lstchg * 86400;
+-		strftime(datebuf, sizeof datebuf, "%m%d%y", localtime(&tchg));
++		strftime(datebuf, sizeof datebuf, "%Y-%m-%d", localtime(&tchg));
+ 		printf(oflag ? ":%s:%s:%s:%s:%ld:%ld:%ld" :
+ 				"                        %s\n\
+                         %s\n\
+-- 
+2.50.1 (Apple Git-155)
+

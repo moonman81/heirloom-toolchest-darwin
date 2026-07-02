@@ -1,0 +1,81 @@
+From 8d77a60e0b961ee138ad48976b9d1fece263235d Mon Sep 17 00:00:00 2001
+From: Warwick Brown <me@moonman.me.uk>
+Date: Thu, 2 Jul 2026 14:39:06 +0100
+Subject: [PATCH 2/6] =?UTF-8?q?phase=203a:=20toolchest=20libs=20=E2=80=94?=
+ =?UTF-8?q?=20Darwin=20alloca.h=20+=20point=20yacc/lex=20at=20Heirloom?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+libcommon/_alloca.h:
+    The Apple branch used to include <stdlib.h>, assuming Darwin's
+    stdlib.h declared alloca(3) directly. Modern macOS SDKs (Xcode 12+)
+    moved the declaration back to the system <alloca.h> gated on
+    _DARWIN_C_SOURCE. Use include_next <alloca.h> to reach the SDK
+    header past this local shim.
+
+toolchest/build/mk.config:
+    YACC and LEX now point at /opt/heirloom/ccs/bin/yacc and .../lex
+    installed by Phase 2. Ensures the toolchest's bc/nawk/oawk are
+    fed by the same grammar tools they will ship alongside, avoiding
+    subtle divergence between system bison and Heirloom yacc.
+
+Libs built: libwchar (widechar shim, largely unused on Darwin),
+libcommon (getopt/gmatch/pfmt/regexpr/iblok/oblok), libuxre (POSIX RE),
+_install/install_ucb helper. libcommon warnings for strtol.o and
+pathconf.o carrying no symbols are expected — those TUs are guarded
+out on platforms where libc already provides the interface (Darwin
+does), leaving empty .o files.
+---
+ build/mk.config     |  4 ++--
+ libcommon/_alloca.h | 16 ++++++++++++++--
+ 2 files changed, 16 insertions(+), 4 deletions(-)
+
+diff --git a/build/mk.config b/build/mk.config
+index 85d173e..91f4fdf 100644
+--- a/build/mk.config
++++ b/build/mk.config
+@@ -234,13 +234,13 @@ LNS = ln -s
+ # Yacc implementations known to work with the Heirloom Toolchest are
+ # the original Unix yacc, Berkeley yacc, and GNU bison -y (v. 1.875).
+ #
+-YACC = yacc
++YACC = /opt/heirloom/ccs/bin/yacc
+ 
+ #
+ # Lex implementations known to work with the Heirloom Toolchest are
+ # most derivatives of the original Unix lex and flex.
+ #
+-LEX = lex
++LEX = /opt/heirloom/ccs/bin/lex
+ 
+ #
+ # Whether to use the supplied widechar emulation library. This should
+diff --git a/libcommon/_alloca.h b/libcommon/_alloca.h
+index dc2afe5..d034389 100644
+--- a/libcommon/_alloca.h
++++ b/libcommon/_alloca.h
+@@ -22,6 +22,18 @@
+ /*	Sccsid @(#)_alloca.h	1.5 (gritter) 1/22/06	*/
+ 
+ #if defined (__FreeBSD__) || defined (__NetBSD__) || defined (__OpenBSD__) || \
+-	defined (__DragonFly__) || defined (__APPLE__)
++	defined (__DragonFly__)
+ #include <stdlib.h>
+-#endif	/* __FreeBSD__, __NetBSD__, __OpenBSD__, __DragonFly__, __APPLE__ */
++#endif	/* __FreeBSD__, __NetBSD__, __OpenBSD__, __DragonFly__ */
++
++#if defined (__APPLE__)
++/*
++ * Darwin port: shim originally assumed Darwin declared alloca(3) in
++ * <stdlib.h>. Modern macOS SDKs (Xcode 12+) put the declaration back
++ * in the system <alloca.h> under _DARWIN_C_SOURCE, so <stdlib.h> alone
++ * no longer covers it. Delegate to the system <alloca.h> via
++ * include_next; -D_DARWIN_C_SOURCE is set in build/mk.config.
++ * -- Heirloom Darwin port.
++ */
++#include_next <alloca.h>
++#endif	/* __APPLE__ */
+-- 
+2.50.1 (Apple Git-155)
+

@@ -1,0 +1,202 @@
+From a58c47e7b29a0d4191b07ee789290964ad9f4987 Mon Sep 17 00:00:00 2001
+From: Warwick Brown <me@moonman.me.uk>
+Date: Thu, 2 Jul 2026 13:23:53 +0100
+Subject: [PATCH 1/6] phase 0: Darwin mk.config overlays + top-level driver +
+ PORT.md
+
+- Install prefix /opt/heirloom across all 5 packages.
+- CPPFLAGS: -D_GNU_SOURCE -> -D_DARWIN_C_SOURCE.
+- LARGEF emptied (Darwin off_t already 64-bit).
+- LCRYPT emptied, LIBBZ2 enabled, LIBZ dropped -Bstatic/-Bdynamic (lld).
+- RANLIB = 'ranlib -c' on all 5.
+- Toolchest personalities point at bin, bin/s42, bin/posix, bin/posix2001, ucb.
+- Pkgtools CPPFLAGS gains -I/opt/homebrew/opt/openssl@3/include.
+- Fix pre-existing sh/makefile CFLAGS-clobber bug (split into CPPFLAGS).
+- Top-level src/Makefile drives phase1..phase5 build+install.
+- PORT.md records host + decisions + per-package deviations.
+---
+ build/mk.config | 56 +++++++++++++++++++++++++------------------------
+ 1 file changed, 29 insertions(+), 27 deletions(-)
+
+diff --git a/build/mk.config b/build/mk.config
+index a05983e..85d173e 100644
+--- a/build/mk.config
++++ b/build/mk.config
+@@ -25,33 +25,33 @@ ROOT =
+ # Location for binaries that have no special personality. This location
+ # may be identical to that of one of the first three personalities below.
+ #
+-DEFBIN = /usr/5bin
++DEFBIN = /opt/heirloom/bin
+ 
+ #
+ # Location for SVID3/SVR4-style binaries.
+ #
+-SV3BIN = /usr/5bin
++SV3BIN = /opt/heirloom/bin
+ 
+ #
+ # Location for SVID4/SVR4.2-style binaries.
+ #
+-S42BIN = /usr/5bin/s42
++S42BIN = /opt/heirloom/bin/s42
+ 
+ #
+ # Location for POSIX.2/SUS-style binaries.
+ #
+-SUSBIN = /usr/5bin/posix
++SUSBIN = /opt/heirloom/bin/posix
+ 
+ #
+ # Location for POSIX.1-2001/SUSv3-style binaries.
+-SU3BIN = /usr/5bin/posix2001
++SU3BIN = /opt/heirloom/bin/posix2001
+ 
+ #
+ # Location for SVR4 UCB-style binaries. These do not form a complete
+ # personality, and the binary path must not be identical to the default
+ # one.
+ #
+-UCBBIN = /usr/ucb
++UCBBIN = /opt/heirloom/ucb
+ 
+ #
+ # Location for development binaries. The "tsort" utility is
+@@ -59,40 +59,40 @@ UCBBIN = /usr/ucb
+ # "Heirloom Development Tools" package are expected to be
+ # installed in it.
+ #
+-CCSBIN = /usr/ccs/bin
++CCSBIN = /opt/heirloom/ccs/bin
+ 
+ #
+ # Location for library files.
+ #
+-DEFLIB = /usr/5lib
++DEFLIB = /opt/heirloom/lib
+ 
+ #
+ # Location for superuser-only binaries. May be identical to the
+ # default binary directory.
+ #
+-DEFSBIN = /usr/5bin
++DEFSBIN = /opt/heirloom/bin
+ 
+ #
+ # Location for manual pages (with man1, man1b ... man8 below).
+ #
+-MANDIR = /usr/share/man/5man
++MANDIR = /opt/heirloom/share/man/5man
+ 
+ #
+ # Location for default files. Make sure that this directory is accessible
+ # to all users.
+ #
+-DFLDIR = /etc/default
++DFLDIR = /opt/heirloom/etc/default
+ 
+ #
+ # Location for the spell history file (contains misspelled words for
+ # all users; set to /dev/null to disable).
+ #
+-SPELLHIST = /var/adm/spellhist
++SPELLHIST = /opt/heirloom/var/adm/spellhist
+ 
+ #
+ # Location for the su logfile.
+ #
+-SULOG = /var/log/sulog
++SULOG = /opt/heirloom/var/log/sulog
+ 
+ #
+ # Where to store the file command's magic. Note that the existing
+@@ -108,7 +108,9 @@ MAGIC = $(DEFLIB)/magic
+ #
+ # On HP-UX, AIX, FreeBSD, NetBSD, and OpenBSD, this setting is not used.
+ #
+-TTYGRP = -g utmp
++# macOS does not use the utmp group (writers to utmp are pre-authorised).
++# Leave empty; installer will not chgrp.
++TTYGRP =
+ 
+ #
+ # Curses library. Change to -lncurses if necessary. Caution: Some gcc
+@@ -143,15 +145,15 @@ LCURS = -lcurses
+ # zlib or don't want to use it; you need it only if you want to use inflate
+ # compression when creating zip files with cpio.
+ #
+-LIBZ = -Wl,-Bstatic -lz -Wl,-Bdynamic
++LIBZ = -lz
+ USE_ZLIB = 1
+ 
+ #
+ # The name of the bzip2 library, and whether to use it. The library is only
+ # needed to read and write bzip2 compressed parts of zip files with cpio.
+ #
+-#LIBBZ2 = -Wl,-Bstatic -lbz2 -Wl,-Bdynamic
+-USE_BZLIB = 0
++LIBBZ2 = -lbz2
++USE_BZLIB = 1
+ 
+ #
+ # Compiler and linker flags. HOSTCC is for cross compiling.
+@@ -174,7 +176,7 @@ LDFLAGS =
+ # On AIX, -D_MTEXTEND_H should be added if mtextend.h is not found.
+ # On NetBSD, add -DUSE_TERMCAP.
+ #
+-CPPFLAGS = -D_GNU_SOURCE
++CPPFLAGS = -D_DARWIN_C_SOURCE
+ 
+ #
+ # CFLAGS, CFLAGS2, CFLAGSS, and CFLAGSU make it possible to give special
+@@ -195,15 +197,15 @@ CPPFLAGS = -D_GNU_SOURCE
+ # compiler mode (which is the default) until this issue is properly
+ # handled by the system vendor.
+ #
+-CFLAGS = -O -fomit-frame-pointer $(WARN)
+-CFLAGS2 = -O2 -fomit-frame-pointer $(WARN)
+-CFLAGSS = -Os -fomit-frame-pointer $(WARN)
+-CFLAGSU = -O2 -fomit-frame-pointer -funroll-loops $(WARN)
++CFLAGS = -O -g $(WARN)
++CFLAGS2 = -O2 -g $(WARN)
++CFLAGSS = -Os -g $(WARN)
++CFLAGSU = -O2 -g -funroll-loops $(WARN)
+ 
+ #
+ # Binaries are stripped with this command after installation.
+ #
+-STRIP = strip -s -R .comment -R .note
++STRIP = strip
+ 
+ #
+ # The define for large file support in 32-bit environments.
+@@ -217,7 +219,7 @@ STRIP = strip -s -R .comment -R .note
+ #
+ # On FreeBSD, NetBSD, and OpenBSD, no such define is necessary.
+ #
+-LARGEF = -D_FILE_OFFSET_BITS=64L
++LARGEF =
+ 
+ #
+ # Use this if you prefer symbolic links between installed files.
+@@ -256,14 +258,14 @@ LEX = lex
+ # Crypt library. -lcrypt is okay for everything except HP-UX, AIX, NetBSD,
+ # and old versions of diet libc.
+ #
+-LCRYPT=-lcrypt
++LCRYPT=
+ 
+ #
+ # Run ranlib if it is in the current path. This should take care
+ # of most situations. On Mac OS X, you need to uncomment "ranlib -c".
+ #
+-RANLIB=(hash ranlib) >/dev/null 2>&1 || exit 0; ranlib
+-#RANLIB=ranlib -c
++#RANLIB=(hash ranlib) >/dev/null 2>&1 || exit 0; ranlib
++RANLIB=ranlib -c
+ 
+ #
+ # Don't change the rest of this file unless you really know what you are
+-- 
+2.50.1 (Apple Git-155)
+

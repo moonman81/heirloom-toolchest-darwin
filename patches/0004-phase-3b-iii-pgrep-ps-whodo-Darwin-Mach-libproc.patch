@@ -1,0 +1,149 @@
+From d8c0ae9c7c0f916e615ad9623e054eb1722a8327 Mon Sep 17 00:00:00 2001
+From: Warwick Brown <me@moonman.me.uk>
+Date: Thu, 2 Jul 2026 17:26:16 +0100
+Subject: [PATCH 4/6] =?UTF-8?q?phase=203b-iii:=20pgrep/ps/whodo=20?=
+ =?UTF-8?q?=E2=80=94=20Darwin=20Mach=20+=20libproc?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Three source patches unblock the last utmpx/proc-touching tier of
+toolchest utilities. Same pattern in each: replace the
+<mach/mach_types.h> + <mach/task_info.h> per-file includes (which
+provide only types + constants) with the umbrella <mach/mach.h>
+that also provides function prototypes for mach_task_self(),
+task_info(), task_threads(), thread_info(),
+mach_port_deallocate() — everything the Darwin branches call at
+runtime. Also add <libproc.h> so future extensions (proc_listpids,
+proc_pidinfo) resolve without further header work.
+
+pgrep/pgrep.c:
+    Additionally move <kvm.h> out of the Apple branch entirely —
+    Darwin does not ship kvm(3). NetBSD/OpenBSD still use it and
+    that path is preserved.
+
+ps/ps.c:
+    Same Apple/kvm split. Also fix ioctl() include for the
+    TIOCGWINSZ terminal-size probe: <termios.h> defines TIOCGWINSZ
+    on Darwin but not ioctl(), so the '#ifndef TIOCGWINSZ' guard
+    would skip <sys/ioctl.h> and leave ioctl() undeclared.
+
+whodo/whodo.c:
+    Same Apple/mach-umbrella pattern; <kvm.h> was already correctly
+    gated to the !__APPLE__ branch.
+
+Runtime spot-check: ps prints headers; whodo runs (may emit
+'no controlling terminal' when non-interactive; that's expected).
+
+Toolchest final tally: 198 Mach-O binaries built, 0 failures across
+110-ish utilities × 1.8 personality variants.
+---
+ pgrep/pgrep.c | 16 ++++++++++++----
+ ps/ps.c       | 23 ++++++++++++++++++++---
+ whodo/whodo.c | 13 ++++++++++---
+ 3 files changed, 42 insertions(+), 10 deletions(-)
+
+diff --git a/pgrep/pgrep.c b/pgrep/pgrep.c
+index 102269c..7388158 100644
+--- a/pgrep/pgrep.c
++++ b/pgrep/pgrep.c
+@@ -70,13 +70,21 @@ static const char sccsid[] USED = "@(#)pgrep.sl	1.24 (gritter) 1/12/07";
+ #endif	/* !__linux__, !__NetBSD__, !__OpenBSD__ */
+ 
+ #if defined (__NetBSD__) || defined (__OpenBSD__) || defined (__APPLE__)
+-#include <kvm.h>
+ #include <sys/param.h>
+ #include <sys/sysctl.h>
+ #if defined (__APPLE__)
+-#include <mach/mach_types.h>
+-#include <mach/task_info.h>
+-#endif /* __APPLE__ */
++/*
++ * Darwin port: <kvm.h> was originally in this block, but Darwin does
++ * not ship a kvm(3) library — macOS enumerates processes via libproc
++ * (proc_listpids/proc_pidinfo) or sysctl KERN_PROC. Include the Mach
++ * umbrella <mach/mach.h> so mach_task_self(), task_info(),
++ * mach_port_deallocate() all resolve. -- Heirloom Darwin port.
++ */
++#include <mach/mach.h>
++#include <libproc.h>
++#else	/* !__APPLE__ */
++#include <kvm.h>
++#endif	/* __APPLE__ */
+ #define	proc	process
+ #undef	p_pgid
+ #define	p_pgid	p__pgid
+diff --git a/ps/ps.c b/ps/ps.c
+index a15aaf1..f5ffe7b 100644
+--- a/ps/ps.c
++++ b/ps/ps.c
+@@ -134,9 +134,18 @@ static const char cacheid[] = "@(#)/tmp/ps_cache	2.114 (gritter) 1/12/07";
+ #include        <sys/sysctl.h>
+ #include        <sys/mount.h>
+ #include	<sys/resource.h>
+-#include	<mach/mach_types.h>
+-#include	<mach/task_info.h>
++/*
++ * Darwin port: the umbrella <mach/mach.h> pulls in every function
++ * prototype ps.c uses at runtime (mach_task_self, task_info,
++ * task_threads, thread_info, mach_port_deallocate). The former
++ * per-file includes (<mach/mach_types.h>, <mach/task_info.h>) provide
++ * only the types and constants. <mach/shared_memory_server.h> is
++ * still present in current SDKs but marked deprecated; kept for the
++ * legacy printout branch. -- Heirloom Darwin port.
++ */
++#include	<mach/mach.h>
+ #include	<mach/shared_memory_server.h>
++#include	<libproc.h>
+ #define	proc	process
+ #undef	p_pgid
+ #else	/* SVR4 */
+@@ -152,7 +161,15 @@ static const char cacheid[] = "@(#)/tmp/ps_cache	2.114 (gritter) 1/12/07";
+ #endif	/* SVR4 */
+ #include	<wchar.h>
+ #include	<wctype.h>
+-#ifndef	TIOCGWINSZ
++/*
++ * Darwin port: <termios.h> defines TIOCGWINSZ but not ioctl(). The
++ * '#ifndef TIOCGWINSZ' guard would otherwise skip <sys/ioctl.h> and
++ * leave ioctl() undeclared. Include unconditionally on Apple.
++ * -- Heirloom Darwin port.
++ */
++#if defined(__APPLE__)
++#include	<sys/ioctl.h>
++#elif !defined(TIOCGWINSZ)
+ #include	<sys/ioctl.h>
+ #endif
+ 
+diff --git a/whodo/whodo.c b/whodo/whodo.c
+index e7448c0..f8e32ce 100644
+--- a/whodo/whodo.c
++++ b/whodo/whodo.c
+@@ -62,14 +62,21 @@ static const char sccsid[] USED = "@(#)whodo.sl	1.42 (gritter) 1/12/07";
+ 
+ #if defined (__NetBSD__) || defined (__OpenBSD__) || defined (__APPLE__)
+ #if defined (__APPLE__)
+-#include	<mach/mach_types.h>
+-#include	<mach/task_info.h>
++/*
++ * Darwin port: <mach/mach.h> umbrella brings in the function prototypes
++ * whodo.c calls (mach_task_self, task_info, mach_port_deallocate). The
++ * previous per-file includes provided only types + constants. Add
++ * <libproc.h> for the proc-listing helpers used further down the
++ * Darwin branch. -- Heirloom Darwin port.
++ */
++#include	<mach/mach.h>
++#include	<libproc.h>
+ #else	/* !__APPLE__ */
+ #include	<kvm.h>
+ #endif /* !__APPLE__ */
+ #include	<sys/param.h>
+ #include	<sys/sysctl.h>
+-#endif /* __NetBSD__, __NetBSD__, __APPLE__ */
++#endif /* __NetBSD__, __OpenBSD__, __APPLE__ */
+ 
+ #ifdef	__hpux
+ #include	<sys/param.h>
+-- 
+2.50.1 (Apple Git-155)
+
