@@ -2410,8 +2410,15 @@ newmedia(int err)
 		answer[i] = 0;
 		if (Iflag || Oflag) {
 			if (answer[0] == '\0')
-				snprintf(answer, sizeof answer, Iflag ? Iflag :
-						Oflag);
+				/*
+				 * CWE-134: Iflag/Oflag are user-supplied
+				 * strings from cpio -I and -O; passing them as
+				 * a format string to snprintf(3) allows a user
+				 * to inject %s / %n / %x specifiers. Use a
+				 * literal %s. -- Heirloom Darwin hardening.
+				 */
+				snprintf(answer, sizeof answer, "%s",
+					Iflag ? Iflag : Oflag);
 			else if (answer[0] == 'q')
 				exit(errcnt != 0 ? sysv3 ? 1 : 2 : 0);
 			else if (Iflag)
