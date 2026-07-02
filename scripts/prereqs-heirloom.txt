@@ -1,0 +1,5 @@
+# Companion Heirloom packages required BEFORE toolchest.
+# devtools provides yacc + lex used by bc, nawk, oawk.
+sh:/opt/heirloom/bin/sh
+devtools-yacc:/opt/heirloom/ccs/bin/yacc
+devtools-lex:/opt/heirloom/ccs/bin/lex

@@ -1,0 +1,4 @@
+# Homebrew formulae required to build heirloom-toolchest.
+# Optional: zlib, bzip2 for cpio compression support.
+zlib
+bzip2
