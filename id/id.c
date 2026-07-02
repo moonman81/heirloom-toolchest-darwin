@@ -265,7 +265,15 @@ main(int argc, char **argv)
 		me = 0;
 		uid = euid = pwd->pw_uid;
 		gid = egid = pwd->pw_gid;
-	} else if (argc < optind > 1) {
+	} else if (argc - optind > 1) {
+		/*
+		 * Original code: 'argc < optind > 1'. Parses as
+		 * '(argc < optind) > 1' (0-or-1 > 1) = always false, so
+		 * 'id -x foo bar' silently fell through to the me=1 branch
+		 * instead of producing a usage error. Clang -Wparentheses
+		 * caught it during the Darwin port; fixed to the intent.
+		 * -- Heirloom Darwin port.
+		 */
 		usage();
 	} else
 #endif	/* SUS */

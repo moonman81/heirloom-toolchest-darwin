@@ -54,7 +54,12 @@ static const char sccsid[] USED = "@(#)su.sl	1.25 (gritter) 2/21/06";
 #include	<limits.h>
 #include	<syslog.h>
 #ifdef	__APPLE__
-#include	<pam/pam_appl.h>
+/*
+ * Darwin port: modern macOS (10.6+) moved PAM headers from <pam/> to
+ * <security/> — same public API, same library (-lpam), same behaviour.
+ * -- Heirloom Darwin port.
+ */
+#include	<security/pam_appl.h>
 #elif	PAM
 #include	<security/pam_appl.h>
 #else	/* !PAM */

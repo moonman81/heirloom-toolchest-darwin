@@ -51,7 +51,15 @@ static const char sccsid[] USED = "@(#)/usr/ucb/stty.sl	1.23 (gritter) 1/22/06";
 #include <ctype.h>
 #include <locale.h>
 #include <pathconf.h>
-#ifndef	TIOCGWINSZ
+/*
+ * Darwin port: <termios.h> defines TIOCGWINSZ but not ioctl(). The old
+ * guard skipped <sys/ioctl.h> whenever TIOCGWINSZ was already defined,
+ * which left ioctl() undeclared here. Include unconditionally on Darwin.
+ * -- Heirloom Darwin port.
+ */
+#if defined(__APPLE__)
+#include <sys/ioctl.h>
+#elif !defined(TIOCGWINSZ)
 #include <sys/ioctl.h>
 #endif
 

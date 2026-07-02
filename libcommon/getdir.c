@@ -42,16 +42,29 @@
 #define	getdents(a, b, c)	__getdents64(a, b, c)
 #define	dirent	dirent64
 extern int	getdents(int, struct dirent *, size_t);
+#elif defined (__APPLE__)
+/*
+ * Darwin port: getdirentries(2) is deprecated on modern macOS and is
+ * linker-poisoned when __DARWIN_64_BIT_INO_T is in effect (the default
+ * since 10.6). Use POSIX 2008 fdopendir()/readdir() instead: the same
+ * fd-descent semantics, LFS-clean, no deprecation, no 64-bit-inode
+ * poisoning. Directory entries land in a DIR* held on the getdb; the
+ * legacy g_dirbuf/g_offs/g_num fields go unused on Darwin. -- Heirloom
+ * Darwin port.
+ */
+#include	<dirent.h>
+#include	<unistd.h>
+#undef		d_ino
+#define		HEIRLOOM_DARWIN_FDOPENDIR	1
 #elif defined	(__GLIBC__) || defined (__FreeBSD__) || defined (_AIX) || \
 	defined (__NetBSD__) || defined (__OpenBSD__) || \
-	defined (__DragonFly__) || defined (__APPLE__)
+	defined (__DragonFly__)
 #include	<dirent.h>
 #define	getdents(a, b, c)	getdirentries((a), (char *)(b), (c), &(db->g_offs))
 #if defined (__FreeBSD__) || defined (__NetBSD__) || defined (__OpenBSD__) || \
-	defined (__DragonFly__) || defined (__APPLE__)
+	defined (__DragonFly__)
 #undef	d_ino
-#endif	/* __FreeBSD__ || __NetBSD__ || __OpenBSD__ || __DragonFly__
-	 || __APPLE__ */
+#endif	/* __FreeBSD__ || __NetBSD__ || __OpenBSD__ || __DragonFly__ */
 #elif defined	(__dietlibc__)
 #include	<dirent.h>
 #include	<unistd.h>
@@ -96,6 +109,9 @@ struct	getdb {
 	} g_u;
 	int		g_num;
 	int		g_fd;
+#ifdef	HEIRLOOM_DARWIN_FDOPENDIR
+	DIR		*g_dh;		/* Darwin: fdopendir(dup(g_fd)) */
+#endif
 };
 
 struct getdb *
@@ -109,12 +125,25 @@ getdb_alloc(const char *path, int fd)
 	db->g_offs = 0;
 	db->g_fd = fd;
 	db->g_path = path;
+#ifdef	HEIRLOOM_DARWIN_FDOPENDIR
+	/*
+	 * Darwin: fdopendir(3) takes ownership of the fd, so dup() first
+	 * to preserve the caller's fd. Deferred open (allocated lazily
+	 * in getdir()) avoids syscall cost when the caller ends up not
+	 * iterating.
+	 */
+	db->g_dh = NULL;
+#endif
 	return db;
 }
 
 void
 getdb_free(struct getdb *db)
 {
+#ifdef	HEIRLOOM_DARWIN_FDOPENDIR
+	if (db->g_dh != NULL)
+		closedir(db->g_dh);	/* also closes the dup'd fd */
+#endif
 	free(db);
 }
 
@@ -124,6 +153,34 @@ getdir(struct getdb *db, int *err)
 	int	reclen;
 
 	*err = 0;
+#ifdef	HEIRLOOM_DARWIN_FDOPENDIR
+	/*
+	 * Darwin path: use POSIX 2008 fdopendir()/readdir(). Lazy-open
+	 * on first call. readdir() returns NULL on EOF; distinguish
+	 * error via errno reset+check per POSIX.
+	 */
+	if (db->g_dh == NULL) {
+		int	dup_fd = dup(db->g_fd);
+		if (dup_fd < 0) {
+			*err = errno;
+			return NULL;
+		}
+		if ((db->g_dh = fdopendir(dup_fd)) == NULL) {
+			*err = errno;
+			close(dup_fd);
+			return NULL;
+		}
+	}
+	errno = 0;
+	if ((db->g_dirp = readdir(db->g_dh)) == NULL) {
+		if (errno != 0)
+			*err = errno;
+		return NULL;
+	}
+	db->g_dic.d_ino = db->g_dirp->d_ino;
+	db->g_dic.d_name = db->g_dirp->d_name;
+	return &(db->g_dic);
+#else	/* HEIRLOOM_DARWIN_FDOPENDIR */
 	while (db->g_dirp == NULL)
 	{
 		/*LINTED*/
@@ -194,4 +251,5 @@ getdir(struct getdb *db, int *err)
 		/*LINTED*/
 		db->g_dirp = (struct dirent *)((char *)db->g_dirp + reclen);
 	return &(db->g_dic);
+#endif	/* HEIRLOOM_DARWIN_FDOPENDIR */
 }

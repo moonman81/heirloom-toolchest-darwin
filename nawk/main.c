@@ -66,7 +66,14 @@ int	mb_cur_max;	/* MB_CUR_MAX, for acceleration */
 
 extern const char badopen[];
 
-int main(int argc, unsigned char *argv[], unsigned char *envp[])
+/*
+ * Darwin/clang port: C99+ require main's argv/envp to be char**.
+ * The original prototype used unsigned char** which older compilers
+ * accepted silently. Keep body semantics by declaring char** at the
+ * boundary and letting the (unsigned char*) casts inside continue to
+ * work. -- Heirloom Darwin port.
+ */
+int main(int argc, char *argv[], char *envp[])
 {
 	unsigned char *fs = NULL;
 	char label[MAXLABEL+1];	/* Space for the catalogue label */

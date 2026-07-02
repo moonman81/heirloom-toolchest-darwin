@@ -4,7 +4,7 @@ tapecntl: tapecntl.o
 	$(LD) $(LDFLAGS) tapecntl.o $(LCOMMON) $(LIBS) -o tapecntl
 
 tapecntl.o: tapecntl.c
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(XO5FL) -DTAPEDFL='"$(DFLDIR)/tape"' -c tapecntl.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(XO5FL) $(ICOMMON) -DTAPEDFL='"$(DFLDIR)/tape"' -c tapecntl.c
 
 tape mt: tapecntl
 	rm -f $@
