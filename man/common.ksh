@@ -617,7 +617,7 @@ do
 		fi
 	done
 	if test "$gotcha" = ,
-	then	
+	then
 		if test -n "$dflag"
 		then
 			echo "$name not found."
@@ -657,7 +657,3 @@ then
 	echo "But what do you want from section $psection?" >&2
 	exit 1
 fi
-
-
-
-
