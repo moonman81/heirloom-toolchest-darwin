@@ -159,10 +159,19 @@ out(const struct login *lp)
 			lp->l_gecos);
 	if (xflag) {
 		time_t tchg;
-		char datebuf[7];
+		/*
+		 * ISO 8601 upgrade: original format was "%m%d%y" (MMDDYY,
+		 * Y2069-limited). Widen buffer and switch to "%Y-%m-%d"
+		 * (YYYY-MM-DD) — unambiguous across locales, sortable,
+		 * and Y10000-safe. -logins(1)- output is human-facing not
+		 * machine-consumed, so this is a display change with no
+		 * on-disk / on-wire impact. -- Heirloom Darwin port
+		 * (PORT.md Y2K finding).
+		 */
+		char datebuf[11];	/* "YYYY-MM-DD" + NUL */
 
 		tchg = lp->l_lstchg * 86400;
-		strftime(datebuf, sizeof datebuf, "%m%d%y", localtime(&tchg));
+		strftime(datebuf, sizeof datebuf, "%Y-%m-%d", localtime(&tchg));
 		printf(oflag ? ":%s:%s:%s:%s:%ld:%ld:%ld" :
 				"                        %s\n\
                         %s\n\
