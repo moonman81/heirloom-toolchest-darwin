@@ -40,6 +40,7 @@ static const char sccsid[] USED = "@(#)/usr/ucb/basename.sl	1.9 (gritter) 5/29/0
 static const char sccsid[] USED = "@(#)basename.sl	1.9 (gritter) 5/29/05";
 #endif
 
+#include "heirloom_flags.h"
 #include <stdio.h>
 #include <libgen.h>
 #include <string.h>
@@ -57,7 +58,7 @@ static char	*progname;
 static void
 usage(void)
 {
-	fprintf(stderr, 
+	fprintf(stderr,
 #ifdef	SUS
 			"Usage:  %s [ path [ suffix ] ]\n",
 #else
@@ -71,6 +72,7 @@ usage(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "basename", 0);
 	char	*path, *suffix = NULL;
 	char	*cp, *sp;
 

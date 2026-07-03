@@ -52,6 +52,7 @@ static const char sccsid[] USED = "@(#)unexpand.sl	1.7 (gritter) 5/29/05";
 
 #include <iblok.h>
 #include "tablist.h"
+#include "heirloom_flags.h"
 
 static int		aflag;
 static int		status;
@@ -65,6 +66,7 @@ static void	spaces(long long *, long long *, struct tab **);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "expand", 0);
 	int	i;
 
 	progname = basename(argv[0]);

@@ -54,6 +54,7 @@ static const char sccsid[] USED = "@(#)comm.sl	1.7 (gritter) 5/29/05";
 #include <unistd.h>
 
 #include "mbtowi.h"
+#include "heirloom_flags.h"
 
 static int	one;
 static int	two;
@@ -90,6 +91,7 @@ usage(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "comm", 0);
 	int	i, l;
 	char	*cols;
 	char	*lb1 = NULL, *lb2 = NULL;

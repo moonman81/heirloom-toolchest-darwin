@@ -52,6 +52,7 @@ static const char sccsid[] USED = "@(#)newform.sl	1.7 (gritter) 5/29/05";
 #include <iblok.h>
 #include <mbtowi.h>
 #include "tabspec.h"
+#include "heirloom_flags.h"
 
 #define	next(wc, s, n) (mb_cur_max > 1 && *(s) & 0200 ? \
 			((n) = mbtowi(&(wc), (s), mb_cur_max), \
@@ -109,6 +110,7 @@ static void		*srealloc(void *, size_t);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "tabs", 0);
 	int	i;
 
 	progname = basename(argv[0]);

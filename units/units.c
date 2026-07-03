@@ -46,6 +46,7 @@ static const char sccsid[] USED = "@(#)units.sl	1.10 (gritter) 5/29/05";
 #include <signal.h>
 #include "sigset.h"
 #include <limits.h>
+#include "heirloom_flags.h"
 
 #ifdef	__GLIBC__
 #ifdef	_IO_getc_unlocked
@@ -79,7 +80,7 @@ static struct prefix
 {
 	double	factor;
 	char	*pname;
-} prefix[] = 
+} prefix[] =
 {
 	{ 1e-18,	"atto" },
 	{ 1e-15,	"femto" },
@@ -118,6 +119,7 @@ static void fperr(int);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "units", 0);
 	register int i;
 	register char *file;
 	struct unit u1, u2;

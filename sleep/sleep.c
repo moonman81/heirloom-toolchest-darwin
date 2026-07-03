@@ -40,6 +40,7 @@ static const char sccsid[] USED = "@(#)sleep.sl	1.8 (gritter) 5/29/05";
 #include	<stdlib.h>
 #include	<errno.h>
 #include	<libgen.h>
+#include "heirloom_flags.h"
 
 static char	*progname;		/* argv[0] to main() */
 
@@ -53,6 +54,7 @@ usage(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "sleep", 0);
 	unsigned	seconds;
 	char	*x;
 

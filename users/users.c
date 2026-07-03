@@ -42,10 +42,12 @@ static const char sccsid[] USED = "@(#)users.sl	1.5 (gritter) 5/29/05";
 #include <unistd.h>
 #include <utmpx.h>
 #include <errno.h>
+#include "heirloom_flags.h"
 
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "users", 0);
 	struct utmpx	*u;
 	int	count = 0;
 

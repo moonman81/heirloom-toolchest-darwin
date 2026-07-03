@@ -52,9 +52,10 @@ static const char sccsid[] USED = "@(#)cal.sl	1.12 (gritter) 5/29/05";
 #include	<string.h>
 #include	<wchar.h>
 #include	<limits.h>
+#include "heirloom_flags.h"
 
 static wchar_t	dayw[] = {
-	' ', 'S', ' ', ' ', 'M', ' ', 'T', 'u', ' ', ' ', 
+	' ', 'S', ' ', ' ', 'M', ' ', 'T', 'u', ' ', ' ',
 	'W', ' ', 'T', 'h', ' ', ' ', 'F', ' ', ' ', 'S', 0
 };
 static char	*smon[]= {
@@ -82,6 +83,7 @@ static void	wput(const wchar_t *);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "cal", 0);
 	register int y = 1, i, j;
 	int m = 1;
 

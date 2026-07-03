@@ -55,10 +55,12 @@
 #include <limits.h>
 
 #include "dc.h"
+#include "heirloom_flags.h"
 
 int
 main(int argc,char **argv)
 {
+	heirloom_flags(argc, argv, "dc", HF_VERBOSE_TAKEN);
 	init(argc,argv);
 	commnds();
 	/*NOTREACHED*/

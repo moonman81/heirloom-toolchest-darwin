@@ -39,6 +39,7 @@ static const char sccsid[] USED = "@(#)priocntl_s42.sl	1.19 (gritter) 7/23/06";
 static const char sccsid[] USED = "@(#)priocntl.sl	1.19 (gritter) 7/23/06";
 #endif
 
+#include "heirloom_flags.h"
 #include	<sys/time.h>
 #include	<sys/resource.h>
 #include	<unistd.h>
@@ -891,6 +892,7 @@ selid(const char *s)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "priocntl", 0);
 	const char	optstring[] = "ldi:sc:ep:";
 	int	i;
 

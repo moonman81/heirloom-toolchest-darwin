@@ -33,6 +33,7 @@
 #endif
 static const char sccsid[] USED = "@(#)tty.sl	1.14 (gritter) 1/22/06";
 
+#include "heirloom_flags.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <libgen.h>
@@ -60,6 +61,7 @@ usage(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "tty", 0);
 	const char	optstring[] = "ls";
 	char	*tty;
 	int	i;

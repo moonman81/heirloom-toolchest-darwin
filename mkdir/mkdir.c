@@ -43,6 +43,7 @@ static const char sccsid[] USED = "@(#)mkdir.sl	1.7 (gritter) 5/29/05";
 #include	<string.h>
 #include	<libgen.h>
 #include	<errno.h>
+#include "heirloom_flags.h"
 
 enum	okay {
 	OKAY = 0,
@@ -136,6 +137,7 @@ parents(char *dir)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "mkdir", HF_VERBOSE_TAKEN);
 	const char	optstring[] = "m:p";
 	int	i;
 

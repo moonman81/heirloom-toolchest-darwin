@@ -50,6 +50,7 @@ static const char sccsid[] USED = "@(#)cat.sl	2.18 (gritter) 5/29/05";
 #include	"sfile.h"
 #include	"iblok.h"
 #include	"oblok.h"
+#include "heirloom_flags.h"
 
 static unsigned	errcnt;			/* count of errors */
 static int	sflag;			/* silent about nonexistent files */
@@ -225,6 +226,7 @@ closeit:
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "cat", 0);
 	struct oblok	*op;
 	int	i;
 

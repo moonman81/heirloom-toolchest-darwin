@@ -49,6 +49,7 @@
 
 #include	"grep.h"
 #include	"alloc.h"
+#include "heirloom_flags.h"
 
 /*
  * Generic flags and the like.
@@ -593,6 +594,7 @@ fngrep(const char *fn, int level)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "grep", HF_VERBOSE_TAKEN);
 	int i, hadpat = 0;
 
 #ifdef	__GLIBC__

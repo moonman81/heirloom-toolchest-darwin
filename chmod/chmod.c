@@ -62,6 +62,7 @@ static const char sccsid[] USED = "@(#)chmod.sl	1.10 (gritter) 5/29/05";
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
+#include "heirloom_flags.h"
 
 #define	USER	05700	/* user's bits */
 #define	GROUP	02070	/* group's bits */
@@ -104,6 +105,7 @@ static void	execreq(const char *);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "chmod", HF_VERBOSE_TAKEN);
 	register int	i;
 	const char	*ms;
 

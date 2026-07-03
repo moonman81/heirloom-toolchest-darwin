@@ -37,10 +37,12 @@ static const char sccsid[] USED = "@(#)whoami.sl	1.3 (gritter) 5/29/05";
 #include <stdio.h>
 #include <pwd.h>
 #include <unistd.h>
+#include "heirloom_flags.h"
 
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "whoami", 0);
 	struct passwd	*pw;
 
 	if ((pw = getpwuid(geteuid())) != NULL) {

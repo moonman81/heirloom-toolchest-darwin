@@ -45,6 +45,7 @@ static const char sccsid[] USED = "@(#)banner.sl	1.5 (gritter) 5/29/05";
 #include <stdlib.h>
 #include <stdio.h>
 #include <libgen.h>
+#include "heirloom_flags.h"
 
 #define nchars 256	/*number of chars in char set*/
 #define nlines  7	/*number of lines in a banner character*/
@@ -326,6 +327,7 @@ static void	banprt(struct bann *);
 int
 main(int argc,char **argp)
 {
+	heirloom_flags(argc, argp, "banner", 0);
 	int i;
 	/*if invoked with no arguments, prints error comment;
 	  if invoked with an argument, prints it in banner form.

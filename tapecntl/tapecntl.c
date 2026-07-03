@@ -34,6 +34,7 @@
 #endif
 static const char sccsid[] USED = "@(#)tapecntl.sl	1.38 (gritter) 1/22/06";
 
+#include "heirloom_flags.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -777,6 +778,7 @@ stats(int fd)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "tapecntl", 0);
 	int	fd;
 	int	i;
 

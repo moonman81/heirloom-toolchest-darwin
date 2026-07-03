@@ -52,6 +52,7 @@ static const char sccsid[] USED = "@(#)fold.sl	1.8 (gritter) 5/29/05";
 #include <iblok.h>
 #include <blank.h>
 #include <mbtowi.h>
+#include "heirloom_flags.h"
 
 #define	next(wc, s, n) (mb_cur_max > 1 && *(s) & 0200 ? \
 			((n) = mbtowi(&(wc), (s), mb_cur_max), \
@@ -75,6 +76,7 @@ static void	cwidth(wint_t, int, long *);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "fold", 0);
 	int	status = 0;
 	int	i;
 

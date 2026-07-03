@@ -56,6 +56,7 @@ static const char sccsid[] USED = "@(#)tabs.sl	1.11 (gritter) 5/29/05";
 #endif	/* USE_TERMCAP */
 
 #include	"tabspec.h"
+#include "heirloom_flags.h"
 
 static int		status;		/* exit status */
 static int		margin = -1;	/* set left margin */
@@ -234,6 +235,7 @@ setupterm(char *d1, int d2, int *d3)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "tabs", 0);
 	int	err;
 
 	scan(argc, argv, 0);

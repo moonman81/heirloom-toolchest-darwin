@@ -57,6 +57,7 @@ static const char sccsid[] USED = "@(#)nl.sl	1.18 (gritter) 5/29/05";
 #endif
 #include	<iblok.h>
 #include	<mbtowi.h>
+#include "heirloom_flags.h"
 
 struct	type {
 	const char	*t_str;
@@ -517,6 +518,7 @@ nl(struct iblok *ip)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "nl", 0);
 	setlocale(LC_COLLATE, "");
 	setlocale(LC_CTYPE, "");
 	mb_cur_max = MB_CUR_MAX;

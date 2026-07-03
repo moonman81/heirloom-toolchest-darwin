@@ -58,6 +58,7 @@ static const char sccsid[] USED = "@(#)/usr/ucb/ln.sl	1.6 (gritter) 5/29/05";
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
+#include "heirloom_flags.h"
 
 static struct	stat stb;
 static int	fflag;		/* force flag set? */
@@ -70,6 +71,7 @@ static void	*srealloc(void *, size_t);
 int
 main(int argc, register char **argv)
 {
+	heirloom_flags(argc, argv, "ln", HF_VERBOSE_TAKEN);
 	register int i, r;
 
 	progname = basename(argv[0]);
@@ -84,7 +86,7 @@ main(int argc, register char **argv)
 		argv++;
 		argc--;
 	}
-	if (argc == 0) 
+	if (argc == 0)
 		goto usage;
 	else if (argc == 1) {
 		argv[argc] = ".";
@@ -93,7 +95,7 @@ main(int argc, register char **argv)
 	if (sflag == 0 && argc > 2) {
 		if (stat(argv[argc-1], &stb) < 0)
 			goto usage;
-		if ((stb.st_mode&S_IFMT) != S_IFDIR) 
+		if ((stb.st_mode&S_IFMT) != S_IFDIR)
 			goto usage;
 	}
 	r = 0;

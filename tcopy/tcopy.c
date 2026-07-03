@@ -53,6 +53,7 @@
 #endif
 static const char sccsid[] USED = "@(#)tcopy.sl	1.16 (gritter) 1/22/06";
 
+#include "heirloom_flags.h"
 #include <stdio.h>
 #include <signal.h>
 #include "sigset.h"
@@ -89,6 +90,7 @@ static void	RUBOUT(int);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "tcopy", 0);
 	register int n, nw, inp, outp = -1;
 
 	progname = basename(argv[0]);

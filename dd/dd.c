@@ -66,6 +66,7 @@ static const char sccsid[] USED = "@(#)dd.sl	1.30 (gritter) 1/22/06";
 #include	"atoll.h"
 #include	"memalign.h"
 #include	"mbtowi.h"
+#include "heirloom_flags.h"
 
 /*
  * For 'conv=ascii'.
@@ -264,7 +265,7 @@ expr(const char *ap)
 	d_type	val;
 	char	*x;
 	int	c;
-	
+
 	if (*ap == '-' || *ap == '+')
 		badnumeric(ap);
 	val = strtoull(ap, &x, 10);
@@ -1003,6 +1004,7 @@ dd(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "dd", HF_VERBOSE_TAKEN);
 	const char	*cp;
 	int	o, i;
 

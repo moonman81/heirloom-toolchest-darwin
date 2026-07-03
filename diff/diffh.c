@@ -96,6 +96,7 @@ static const char sccsid[] USED = "@(#)diffh.sl	1.11 (gritter) 5/29/05";
 
 #include <iblok.h>
 #include <mbtowi.h>
+#include "heirloom_flags.h"
 
 #define C 3
 #define RANGE 30
@@ -184,6 +185,7 @@ movstr(register int f, register int i, register int j)
 int
 main(int argc,char **argv)
 {
+	heirloom_flags(argc, argv, "diff", HF_VERBOSE_TAKEN);
 	char *s0,*s1;
 	register int c, status = 0;
 

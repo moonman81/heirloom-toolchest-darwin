@@ -37,6 +37,7 @@
 #include <locale.h>
 #include <langinfo.h>
 #include <libgen.h>
+#include "heirloom_flags.h"
 
 #define	CMDCLASS	""/*"UX:"*/	/* Command classification */
 
@@ -75,6 +76,7 @@ extern const char badopen[];
  */
 int main(int argc, char *argv[], char *envp[])
 {
+	heirloom_flags(argc, argv, "nawk", HF_VERBOSE_TAKEN);
 	unsigned char *fs = NULL;
 	char label[MAXLABEL+1];	/* Space for the catalogue label */
 

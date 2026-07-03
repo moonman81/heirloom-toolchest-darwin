@@ -39,12 +39,14 @@ static const char sccsid[] USED = "@(#)hostname.sl	1.3 (gritter) 5/29/05";
 #include <unistd.h>
 #include <stdio.h>
 #include <libgen.h>
+#include "heirloom_flags.h"
 
 static const char	*progname;
 
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "hostname", 0);
 	progname = basename(argv[0]);
 	if (argc > 1 && argv[1][0]=='-' && argv[1][1]=='-' && argv[1][2]=='\0')
 		argc--, argv++;

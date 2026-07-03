@@ -64,7 +64,7 @@
 #include	"fmtmsg.h"
 
 
-
+
 /*
  * Local definitions
  */
@@ -194,7 +194,7 @@ static  struct sev_info		severities[] =  {
 
 static	char	labelbuf[128];		/* Buf for message label */
 static	char	msgbuf[256];		/* Buf for messages */
-
+
 /*
  * static char *exttok(str, delims)
  *	char   *str
@@ -239,7 +239,7 @@ exttok(
 	 *    1.  Get the starting address (new string or where we
 	 *	  left off).  If nothing to search, return NULL
 	 *    2.  Find the end of the string
-	 *    3.  Look for the first unescaped delimiter closest to the 
+	 *    3.  Look for the first unescaped delimiter closest to the
 	 *	  beginning of the string
 	 *    4.  Remember where we left off
 	 *    5.  Return a pointer to the delimiter we found
@@ -262,10 +262,10 @@ exttok(
 	/* Done */
 	return(tokend);
 }
-
+
 /*
  * char *noesc(str)
- *	
+ *
  *	This function squeezes out all of the escaped character sequences
  *	from the string <str>.  It returns a pointer to that string.
  *
@@ -293,9 +293,9 @@ noesc(
 	while (*p && (*p != '\\')) p++;
 
 
-	/* 
-	 * If there was at least one, squeeze them out 
-	 * Otherwise, don't touch the argument string 
+	/*
+	 * If there was at least one, squeeze them out
+	 * Otherwise, don't touch the argument string
 	 */
 
 	if (*p) {
@@ -306,7 +306,7 @@ noesc(
 	/* Finished.  Return our argument */
 	return(str);
 }
-
+
 /*
  * struct sevstr *getauxsevs(ptr)
  *
@@ -440,7 +440,7 @@ getauxsevs(char *ptr)
 	/* Finished */
 	return(rtnval);
 }
-
+
 /*
  * fmtmsg [-a action] [-c classification] [-l label] [-s severity] [-t tag]
  *        [-u subclass[,subclass[,...]]] [text]
@@ -477,12 +477,15 @@ getauxsevs(char *ptr)
  * Open Issues:
  */
 
+#include "heirloom_flags.h"
+
 int
 main(
 	int	argc,			/* Argument count */
 	char   *argv[]			/* Pointers to arguments */
 )
 {
+	heirloom_flags(argc, argv, "fmtmsg", 0);
 
 	/* Local automatic data */
 
@@ -693,7 +696,7 @@ main(
 		/* If found in list and no conflict, remember in class */
 		if ((class_info->keyword != NULL) && ((class & class_info->conflict) == 0L))
 		    class |= class_info->value;
-		else 
+		else
 		    errflg = TRUE;
 
 	    } while (!errflg && ((tokenptr = strtok(NULL, ",")) != NULL)) ;

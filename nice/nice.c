@@ -40,6 +40,7 @@ static const char sccsid[] USED = "@(#)nice.sl	1.10 (gritter) 5/29/05";
 #include	<stdlib.h>
 #include	<errno.h>
 #include	<libgen.h>
+#include "heirloom_flags.h"
 
 static unsigned	errcnt;			/* count of errors */
 static char	*progname;		/* argv[0] to main() */
@@ -84,6 +85,7 @@ get_niceval(char *arg)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "nice", 0);
 	int	e, i;
 	int	niceval = 10;
 

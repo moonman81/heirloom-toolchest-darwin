@@ -66,6 +66,7 @@ static const char sccsid[] USED = "@(#)sdiff.sl	1.8 (gritter) 5/29/05";
 
 #include <iblok.h>
 #include <mbtowi.h>
+#include "heirloom_flags.h"
 
 struct difference {
 	long long	d_lbot;
@@ -119,6 +120,7 @@ static void	edit(const char *, FILE *, FILE *);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "sdiff", HF_VERBOSE_TAKEN);
 	const char	optstring[] = ":w:lso:";
 	const char	*fl, *fr;
 	static char	illegal[20];

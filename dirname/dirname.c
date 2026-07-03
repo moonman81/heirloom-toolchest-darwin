@@ -38,6 +38,7 @@ static const char sccsid[] USED = "@(#)dirname.sl	1.5 (gritter) 5/29/05";
 #include <libgen.h>
 #include <string.h>
 #include <stdlib.h>
+#include "heirloom_flags.h"
 
 static char	*progname;
 
@@ -51,6 +52,7 @@ usage(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "dirname", 0);
 	char	*path = 0, *cp;
 
 	progname = basename(argv[0]);

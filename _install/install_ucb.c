@@ -46,6 +46,7 @@ static const char sccsid[] USED = "@(#)/usr/ucb/install.sl	1.12 (gritter) 5/29/0
 #include	<limits.h>
 #include	<pwd.h>
 #include	<grp.h>
+#include "heirloom_flags.h"
 
 enum	okay {
 	OKAY = 0,
@@ -390,6 +391,7 @@ installd(char *dir)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "_install", 0);
 	const char	optstring[] = "csg:m:o:d";
 	int	i;
 

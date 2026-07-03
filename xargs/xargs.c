@@ -52,6 +52,7 @@ static const char sccsid[] USED = "@(#)xargs.sl	1.15 (gritter) 6/21/05";
 #include	<iblok.h>
 #include	<blank.h>
 #include	<mbtowi.h>
+#include "heirloom_flags.h"
 
 #if defined (__GLIBC__) && defined(_IO_putc_unlocked)
 #undef	putc
@@ -542,7 +543,7 @@ insert(const char *s)
 
 #define	nextc()		(cp = (mb_cur_max > 1 ? ib_getw(ip, &c, &n) : \
 		(c = ib_get(ip)) == (wint_t)EOF ? NULL : (b = c, n = 1, &b)))
-			
+
 #define	blankc(c)	(mb_cur_max > 1 ? iswblank(c):isblank(c))
 
 static char *
@@ -638,6 +639,7 @@ process(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "xargs", 0);
 	static char	errbuf[256];
 	int	i;
 

@@ -55,6 +55,7 @@ static const char sccsid[] USED = "@(#)factor.sl	1.11 (gritter) 5/29/05";
 #include "asciitype.h"
 
 #include "config.h"
+#include "heirloom_flags.h"
 
 #ifdef	USE_LONG_DOUBLE
 typedef	long double	f_type;
@@ -98,6 +99,7 @@ static void	print(f_type);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "factor", 0);
 	char	*str = NULL;
 	int	siz = 0;
 

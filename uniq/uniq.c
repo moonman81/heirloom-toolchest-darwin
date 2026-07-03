@@ -58,6 +58,7 @@ static const char sccsid[] USED = "@(#)uniq.sl	1.10 (gritter) 5/29/05";
 #include <unistd.h>
 #include <blank.h>
 #include <libgen.h>
+#include "heirloom_flags.h"
 
 static int	fields;
 static int	letters;
@@ -89,6 +90,7 @@ missing(int c)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "uniq", HF_VERBOSE_TAKEN);
 	static char *b1, *b2;
 	static size_t	s1 = 0, s2 = 0, l1, l2;
 

@@ -38,10 +38,12 @@ static const char sccsid[] USED = "@(#)pwd.sl	1.1 (gritter) 6/29/05";
 #include <unistd.h>
 #include <stdlib.h>
 #include <errno.h>
+#include "heirloom_flags.h"
 
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "pwd", 0);
 	size_t	size = 0;
 	char	*buf = NULL, *cwd = NULL;
 

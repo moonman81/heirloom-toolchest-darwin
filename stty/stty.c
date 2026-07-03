@@ -38,6 +38,7 @@ static const char sccsid[] USED = "@(#)stty.sl	1.23 (gritter) 1/22/06";
 static const char sccsid[] USED = "@(#)/usr/ucb/stty.sl	1.23 (gritter) 1/22/06";
 #endif	/* UCB */
 
+#include "heirloom_flags.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -557,6 +558,7 @@ static void	size(void);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "stty", 0);
 	int	dds;
 
 	progname = basename(argv[0]);

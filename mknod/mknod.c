@@ -37,6 +37,7 @@ static const char sccsid[] USED = "@(#)mknod.sl	1.8 (gritter) 5/29/05";
 #if defined (__GLIBC__) || defined (_AIX)
 #include	<sys/sysmacros.h>
 #endif	/* __GLIBC__ || _AIX */
+#include "heirloom_flags.h"
 #include	<sys/types.h>	/* Darwin: major()/minor()/makedev() live here */
 #include	<sys/stat.h>
 #include	<stdio.h>
@@ -149,6 +150,7 @@ getlimits(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "mknod", 0);
 	progname = basename(argv[0]);
 	if (argc < 3)
 		usage();

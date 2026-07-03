@@ -57,6 +57,7 @@ static const char sccsid[] USED = "@(#)du.sl	1.39 (gritter) 5/29/05";
 #include	<locale.h>
 
 #include	<getdir.h>
+#include "heirloom_flags.h"
 
 #ifdef	__hpux
 #define	hpfix(blocks)	((blocks) <<= 1)
@@ -540,6 +541,7 @@ usage(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "du", 0);
 	int i;
 
 #ifdef	__GLIBC__

@@ -82,6 +82,7 @@ typedef		unsigned long long	ull;
 #endif	/* SVR4 */
 #include	<libgen.h>
 #include	<limits.h>
+#include "heirloom_flags.h"
 
 #ifndef	__GLIBC_PREREQ
 #define	__GLIBC_PREREQ(x, y)	0
@@ -640,6 +641,7 @@ usage(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "df", 0);
 	int i;
 
 #ifdef	__GLIBC__
@@ -711,6 +713,7 @@ main(int argc, char **argv)
 {
 	int i;
 
+	heirloom_flags(argc, argv, "df", 0);
 	progname = basename(argv[0]);
 	if (getenv("SYSV3") != NULL)
 		sysv3 = 1;

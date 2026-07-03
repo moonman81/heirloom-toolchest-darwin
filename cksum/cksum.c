@@ -56,6 +56,7 @@ static const char sccsid[] USED = "@(#)cksum.sl	1.6 (gritter) 5/29/05";
 #include <libgen.h>
 #include <string.h>
 #include <errno.h>
+#include "heirloom_flags.h"
 
 static char	*progname;
 
@@ -159,6 +160,7 @@ cksum(const char *name)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "cksum", 0);
 	int	i, errflg = 0;
 
 	progname = basename(argv[0]);

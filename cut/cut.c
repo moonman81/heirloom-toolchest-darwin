@@ -49,6 +49,7 @@ static const char sccsid[] USED = "@(#)cut.sl	1.20 (gritter) 5/29/05";
 #include	<locale.h>
 
 #include	"iblok.h"
+#include "heirloom_flags.h"
 
 #if defined (__GLIBC__) && defined (_IO_putc_unlocked)
 #undef	putc
@@ -114,7 +115,7 @@ usage(void)
 static void
 badlist(void)
 {
-	error(method == 'b' ? "bad list for b/c/f option" : 
+	error(method == 'b' ? "bad list for b/c/f option" :
 			"bad list for c/f option");
 }
 
@@ -360,6 +361,7 @@ fncut(const char *fn)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "cut", 0);
 	const char	optstring[] = "b:c:d:f:ns";
 	int	i;
 

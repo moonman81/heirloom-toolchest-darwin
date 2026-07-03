@@ -92,6 +92,7 @@ static const char sccsid[] USED = "@(#)find.sl	1.45 (gritter) 5/8/06";
 #endif
 #include "getdir.h"
 #include "atoll.h"
+#include "heirloom_flags.h"
 #define A_DAY	86400L /* a day full of seconds */
 #define EQ(x, y)	(strcmp(x, y)==0)
 
@@ -259,6 +260,7 @@ static mode_t	newmode(const char *ms, const mode_t pm);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "find", HF_VERBOSE_TAKEN);
 	struct anode *exlist;
 	struct anode nlist = { null, { 0 }, { 0 } };
 	int paths;

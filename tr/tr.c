@@ -63,6 +63,7 @@ static const char sccsid[] USED = "@(#)tr.sl	2.3 (gritter) 9/7/05";
 #include <string.h>
 #include <inttypes.h>
 #include "iblok.h"
+#include "heirloom_flags.h"
 
 #if defined (__GLIBC__) && defined (_IO_putc_unlocked)
 #undef	putchar
@@ -132,6 +133,7 @@ static int caseconv(wint_t (*)(wint_t), int (*)(wint_t));
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "tr", 0);
 	int i, j;
 	int c;
 	char *arg0, *arg1;

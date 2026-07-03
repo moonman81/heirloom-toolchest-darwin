@@ -84,6 +84,7 @@ static const char sccsid[] USED = "@(#)pr.sl	1.29 (gritter) 5/29/05";
 #include <atoll.h>
 #include <iblok.h>
 #include <mbtowi.h>
+#include "heirloom_flags.h"
 
 #define	next(wc, s, n)	(mb_cur_max > 1 && *(s) & 0200 ? \
 		((n) = mbtowi(&(wc), (s), mb_cur_max), \
@@ -165,6 +166,7 @@ static void	printm(void);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "pr", 0);
 	int nfdone, hadtd;
 	int ac;
 	const char **av, *ap;

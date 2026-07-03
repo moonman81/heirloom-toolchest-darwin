@@ -71,6 +71,7 @@ static const char sccsid[] USED = "@(#)fmt.sl	1.9 (gritter) 5/29/05";
 
 #include <iblok.h>
 #include <asciitype.h>
+#include "heirloom_flags.h"
 
 /*
  * fmt -- format the concatenation of input files or standard input
@@ -118,6 +119,7 @@ static void	growobuf(void);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "fmt", 0);
 	register struct iblok *fi;
 	register int errs = 0, i;
 
@@ -241,7 +243,7 @@ fmt(struct iblok *fi)
 
 	get(mp, fi, c, m, b);
 	while (c != (wint_t)EOF) {
-		
+
 		/*
 		 * Collect a line, doing ^H processing.
 		 * Leave tabs for now.
@@ -273,7 +275,7 @@ fmt(struct iblok *fi)
 
 		while (c != '\n' && c != (wint_t)EOF)
 			get(mp, fi, c, m, b);
-		
+
 		/*
 		 * Expand tabs on the way to canonb.
 		 */
@@ -460,7 +462,7 @@ pack(const wchar_t *word)
 	t = colwidth(word);
 	s = colwidthn(outbuf, outp);
 	if (t+s <= width) {
-		
+
 		/*
 		 * In like flint!
 		 */
@@ -520,7 +522,7 @@ tabulate(wchar_t *line)
 	while (cp >= line && *cp == ' ')
 		cp--;
 	*++cp = '\0';
-	
+
 	/*
 	 * Count the leading blank space and tabulate.
 	 */

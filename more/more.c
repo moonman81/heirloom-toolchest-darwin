@@ -95,6 +95,7 @@ static const char sccsid[] USED = "@(#)more.sl	1.33 (gritter) 5/29/05";
 #include <regex.h>
 
 #include <mbtowi.h>
+#include "heirloom_flags.h"
 
 #ifdef	__GLIBC__
 #ifdef	_IO_getc_unlocked
@@ -248,6 +249,7 @@ static void	*smalloc(size_t);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "more", 0);
     FILE		*f;
     char		*s;
     int			ch;

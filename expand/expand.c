@@ -51,6 +51,7 @@ static const char sccsid[] USED = "@(#)expand.sl	1.6 (gritter) 5/29/05";
 
 #include <iblok.h>
 #include "tablist.h"
+#include "heirloom_flags.h"
 
 static int		status;
 static int		mb_cur_max;
@@ -60,6 +61,7 @@ static void	expand(const char *);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "expand", 0);
 	int	i;
 
 	setlocale(LC_CTYPE, "");

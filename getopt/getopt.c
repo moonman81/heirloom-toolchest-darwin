@@ -48,6 +48,7 @@ static const char sccsid[] USED = "@(#)getopt.c	1.4 (gritter) 7/1/05";
 #include <string.h>
 #include <unistd.h>
 #include <libgen.h>
+#include "heirloom_flags.h"
 
 #define	BLOCKLEN	5120
 
@@ -70,6 +71,7 @@ static const char	*progname;
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "getopt", 0);
 	int	c;
 	int	errflg = 0;
 	char	tmpstr[4];

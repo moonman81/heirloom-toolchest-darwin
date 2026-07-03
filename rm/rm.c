@@ -55,6 +55,7 @@ static const char sccsid[] USED = "@(#)rm.sl	2.23 (gritter) 11/17/05";
 #include	<stdarg.h>
 
 #include	"getdir.h"
+#include "heirloom_flags.h"
 
 struct	level {
 	struct getdb	*l_db;
@@ -361,6 +362,7 @@ dotdot(const char *s)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "rm", HF_VERBOSE_TAKEN);
 	int i, startfd = -1, illegal = 0;
 
 #ifdef	__GLIBC__

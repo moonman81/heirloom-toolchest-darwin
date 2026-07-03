@@ -36,6 +36,7 @@ static const char sccsid[] USED = "@(#)line.sl	1.11 (gritter) 5/29/05";
 
 #include	<stdio.h>
 #include	<unistd.h>
+#include "heirloom_flags.h"
 
 static int	status;		/* exit status */
 
@@ -59,6 +60,7 @@ doline(int fd)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "line", 0);
 	doline(0);
 	return status;
 }

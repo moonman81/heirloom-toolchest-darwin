@@ -42,6 +42,7 @@ static const char sccsid[] USED = "@(#)listusers.sl	1.13 (gritter) 5/29/05";
 #include	<pwd.h>
 #include	<grp.h>
 #include	<libgen.h>
+#include "heirloom_flags.h"
 
 /*
  * Any login whose uid is below this value is ignored.
@@ -236,6 +237,7 @@ usage(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "listusers", 0);
 	const char optstring[] = ":g:l:";
 	int i;
 	struct list *groups = NULL, *logins = NULL, *users = NULL, *l;

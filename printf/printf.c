@@ -42,6 +42,7 @@ static const char sccsid[] USED = "@(#)printf.c	1.7 (gritter) 7/17/05";
 #include <limits.h>
 #include <errno.h>
 #include "asciitype.h"
+#include "heirloom_flags.h"
 
 #if defined (__GLIBC__) && defined (_IO_getc_unlocked)
 #undef	putchar
@@ -369,6 +370,7 @@ loop:	switch (*fp) {
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "printf", 0);
 	setlocale(LC_CTYPE, "");
 	mb_cur_max = MB_CUR_MAX;
 	progname = basename(argv[0]);

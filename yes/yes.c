@@ -35,10 +35,12 @@
 static const char sccsid[] USED = "@(#)yes.sl	1.4 (gritter) 5/29/05";
 
 #include <stdio.h>
+#include "heirloom_flags.h"
 
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "yes", 0);
 	while (puts(argc>1?argv[1]:"y") != EOF);
 	return 1;
 }

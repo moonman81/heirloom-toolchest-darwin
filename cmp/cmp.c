@@ -48,6 +48,7 @@ static const char sccsid[] USED = "@(#)cmp.sl	1.19 (gritter) 5/29/05";
 
 #include	"atoll.h"
 #include	"memalign.h"
+#include "heirloom_flags.h"
 
 #if defined (__GLIBC__) && defined (_IO_putc_unlocked)
 #undef	putchar
@@ -316,6 +317,7 @@ setskip(struct file *f, const char *skipstring)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "cmp", 0);
 	struct file	*f1, *f2;
 	const char	optstring[] = "lsw";
 	int	i;

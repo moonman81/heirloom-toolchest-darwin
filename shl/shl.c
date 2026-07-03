@@ -30,6 +30,7 @@
 #else
 #define	USED
 #endif
+#include "heirloom_flags.h"
 static const char sccsid[] USED = "@(#)shl.sl	1.29 (gritter) 12/25/06";
 
 #if !defined (__FreeBSD__) && !defined (__hpux) && !defined (_AIX) && \
@@ -1474,6 +1475,7 @@ onwinch(int signum)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "shl", 0);
 	struct command *p;
 	char *cp;
 	char vdis;
@@ -1574,8 +1576,9 @@ struct command commands[] = {
 #include <stdio.h>
 
 int
-main(void)
+main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "shl", 0);
 	fprintf(stderr, "command not supported\n");
 	return 1;
 }

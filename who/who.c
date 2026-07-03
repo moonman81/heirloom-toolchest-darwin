@@ -51,6 +51,7 @@ static const char sccsid[] USED = "@(#)who.sl	1.19 (gritter) 1/22/06";
 #include	<libgen.h>
 #include	<utmpx.h>
 #include	<limits.h>
+#include "heirloom_flags.h"
 
 enum okay {
 	OKAY,
@@ -312,6 +313,7 @@ who(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "who", HF_VERBOSE_TAKEN);
 	const char	optstring[] = "AabdHlmn:pqRrstTu";
 	int	i;
 

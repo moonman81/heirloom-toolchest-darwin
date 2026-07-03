@@ -55,6 +55,7 @@ static const char sccsid[] USED = "@(#)col.sl	1.9 (gritter) 5/29/05";
 # include <wctype.h>
 # include <unistd.h>
 # include <iblok.h>
+#include "heirloom_flags.h"
 # if defined (__GLIBC__) && defined (_IO_putc_unlocked)
 # undef putchar
 # define putchar(c)	_IO_putc_unlocked(c, stdout)
@@ -115,6 +116,7 @@ static long long	*growsbuff(size_t);
 int
 main (int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "col", HF_VERBOSE_TAKEN);
 	int i;
 	long long greek;
 	long long c;

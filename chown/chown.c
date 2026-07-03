@@ -51,6 +51,7 @@ static const char sccsid[] USED = "@(#)chown.sl	1.14 (gritter) 5/29/05";
 #include	<dirent.h>
 #include	<pwd.h>
 #include	<grp.h>
+#include "heirloom_flags.h"
 
 #ifdef	UCB
 #define	SEPCHAR	'.'
@@ -282,6 +283,7 @@ usage(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "chown", HF_VERBOSE_TAKEN);
 #ifdef	UCB
 	const char	optstring[] = "fhHLPR";
 #else

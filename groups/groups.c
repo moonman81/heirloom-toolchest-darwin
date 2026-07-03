@@ -46,6 +46,7 @@ static const char sccsid[] USED = "@(#)/usr/ucb/groups.sl	1.3 (gritter) 5/29/05"
 #include <pwd.h>
 #include <grp.h>
 #include <libgen.h>
+#include "heirloom_flags.h"
 
 static const char	*progname;
 static int		status;
@@ -55,6 +56,7 @@ static void	groups(const struct passwd *, int);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "groups", 0);
 	struct passwd	*pw;
 	int	i;
 

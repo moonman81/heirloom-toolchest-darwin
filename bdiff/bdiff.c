@@ -53,6 +53,7 @@ static const char sccsid[] USED = "@(#)bdiff.c	1.8 (gritter) 7/2/05";
 #include <sys/wait.h>
 #include <libgen.h>
 #include "sigset.h"
+#include "heirloom_flags.h"
 
 #define	ONSIG	16
 
@@ -104,6 +105,7 @@ static char *prognam;
 int
 main(int argc, char *argv[])
 {
+	heirloom_flags(argc, argv, "bdiff", 0);
 	FILE *poldfile, *pnewfile;
 	char *oline, *nline, *diffline;
 	char *olp, *nlp, *dp;

@@ -58,6 +58,7 @@ static const char sccsid[] USED = "@(#)sum.sl	1.9 (gritter) 5/29/05";
 #include <stdio.h>
 #include <inttypes.h>
 #include <libgen.h>
+#include "heirloom_flags.h"
 
 #ifdef	UCB
 #define	UNIT	1024
@@ -130,6 +131,7 @@ sum(const char *name)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "sum", 0);
 	int	i, errflg = 0;
 
 	progname = basename(argv[0]);

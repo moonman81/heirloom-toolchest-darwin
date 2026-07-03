@@ -62,6 +62,7 @@ static const char sccsid[] USED = "@(#)tail.sl	1.25 (gritter) 6/3/05";
 #include	<limits.h>
 #include	<ctype.h>
 #include	"atoll.h"
+#include "heirloom_flags.h"
 
 #define	check0(n)	((n) > 0 ? (n) : 512)
 
@@ -284,7 +285,7 @@ brka:
 	}
 	if (cnt->c_typ != 'l') {
 		k = n <= i ? i - n :
-			partial ? 0 : 
+			partial ? 0 :
 			n >= spcsize ? i + 1 :
 			i - n + spcsize;
 		k--;
@@ -456,6 +457,7 @@ getcount(const char *arg, int type)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "tail", 0);
 	struct stat	st;
 	struct count	*cnt = NULL;
 	const char	optstring[] = ":c:fn:";

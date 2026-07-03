@@ -50,6 +50,7 @@ static const char sccsid[] USED = "@(#)copy.sl	1.15 (gritter) 5/29/05";
 #include <stdarg.h>
 #include "sfile.h"
 #include "memalign.h"
+#include "heirloom_flags.h"
 
 #ifndef	S_IFDOOR
 #define	S_IFDOOR	0xD000
@@ -118,6 +119,7 @@ static int	dots(const char *);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "copy", 0);
 	int	i, j, argn;
 	const char	*dst = NULL;
 	char	rp[PATH_MAX+1];

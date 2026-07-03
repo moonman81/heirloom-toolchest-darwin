@@ -40,6 +40,7 @@
 #include <stdarg.h>
 #include <wchar.h>
 #include "sed.h"
+#include "heirloom_flags.h"
 
 int	ABUFSIZE;
 struct reptr	**abuf;
@@ -129,6 +130,7 @@ static char	*null;
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "sed", HF_VERBOSE_TAKEN);
 	int c;
 	const char optstr[] = "nf:e:g";
 

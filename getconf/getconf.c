@@ -64,6 +64,7 @@ static const char sccsid[] USED = "@(#)getconf.sl	1.14 (gritter) 01/27/07";
 #include <unistd.h>
 #include <limits.h>
 #include <libgen.h>
+#include "heirloom_flags.h"
 
 /*
  * Values applicable for the Heirloom Toolchest that partially
@@ -2194,6 +2195,7 @@ getconf(struct sctab *scp, int argc, char *name, char *file)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "getconf", 0);
 	register struct sctab *scp;
 	int c;
 	int exstat = 0;

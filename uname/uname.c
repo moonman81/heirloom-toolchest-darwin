@@ -41,6 +41,7 @@ static const char sccsid[] USED = "@(#)uname.sl	1.16 (gritter) 5/29/05";
 #include	<stdlib.h>
 #include	<errno.h>
 #include	<libgen.h>
+#include "heirloom_flags.h"
 
 #if defined (__i386__)
 #define	PROCESSOR	"ia32"
@@ -131,6 +132,7 @@ go(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "uname", 0);
 	const char	optstring[] = "amnprsvS:";
 	int	i;
 

@@ -43,6 +43,7 @@ static const char sccsid[] USED = "@(#)renice.sl	1.7 (gritter) 5/29/05";
 #include	<errno.h>
 #include	<libgen.h>
 #include	<pwd.h>
+#include "heirloom_flags.h"
 
 #ifndef	PRIO_MIN
 #define	PRIO_MIN	-20
@@ -71,6 +72,7 @@ usage: %s priority [ [ -p ] pids ] [ [ -g ] pgrps ] [ [ -u ] users ]\n\
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "renice", 0);
 	struct passwd	*pwd;
 	char	*x;
 	int	i, which = 0, who = 0, oldval;
@@ -222,7 +224,7 @@ traditional_renice(int argc, char **argv)
 		}
 		if (which == PRIO_USER) {
 			register struct passwd	*pwd = getpwnam(*argv);
-			
+
 			if (pwd == NULL) {
 				fprintf(stderr, "renice: %s: unknown user\n",
 					*argv);

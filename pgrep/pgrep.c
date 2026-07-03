@@ -95,6 +95,7 @@ static const char sccsid[] USED = "@(#)pgrep.sl	1.24 (gritter) 1/12/07";
 #endif
 
 #include	<blank.h>
+#include "heirloom_flags.h"
 
 #define	PROCDIR		"/proc"
 #define	eq(a, b)	(strcmp(a, b) == 0)
@@ -1217,7 +1218,7 @@ collectprocs(void)
 		argproc(p, &kp[i]);
 	}
 	/* free the memory allocated by GetBSDProcessList */
-	free(kp);	
+	free(kp);
 }
 #endif	/* all */
 
@@ -1497,6 +1498,7 @@ Usage: %s [-flnovx] [-d delim] [-P ppidlist] [-g pgrplist] [-s sidlist]\n\
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "pgrep", HF_VERBOSE_TAKEN);
 	int	i, flags;
 
 	progname = basename(argv[0]);

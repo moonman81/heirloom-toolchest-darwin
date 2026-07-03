@@ -46,6 +46,7 @@ static const char sccsid[] USED = "@(#)head.sl	1.13 (gritter) 5/29/05";
 #include	"atoll.h"
 
 #include	"iblok.h"
+#include "heirloom_flags.h"
 
 static unsigned	errcnt;			/* count of errors */
 static unsigned long long	count = 10;	/* lines to display */
@@ -119,6 +120,7 @@ get_count(char *arg)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "head", 0);
 	int	i;
 
 	progname = basename(argv[0]);

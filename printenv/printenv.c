@@ -36,10 +36,12 @@ static const char sccsid[] USED = "@(#)printenv.sl	1.3 (gritter) 5/29/05";
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "heirloom_flags.h"
 
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "printenv", 0);
 	extern char	**environ;
 	char	*cp, **ep;
 

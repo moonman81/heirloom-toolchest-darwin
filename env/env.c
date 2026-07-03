@@ -40,6 +40,7 @@ static const char sccsid[] USED = "@(#)env.sl	1.10 (gritter) 5/29/05";
 #include	<stdlib.h>
 #include	<errno.h>
 #include	<libgen.h>
+#include "heirloom_flags.h"
 
 static int	iflag;			/* ignore initial environment */
 static char	*progname;		/* argv[0] to main() */
@@ -49,6 +50,7 @@ extern char	**environ;
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "env", 0);
 	int	i;
 
 	progname = basename(argv[0]);

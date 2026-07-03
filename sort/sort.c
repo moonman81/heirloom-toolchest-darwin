@@ -68,6 +68,7 @@ static const char sccsid[] USED = "@(#)sort.sl	1.37 (gritter) 5/29/05";
 #include <errno.h>
 
 #include <blank.h>
+#include "heirloom_flags.h"
 
 #if defined (__GLIBC__)
 #if defined (_IO_getc_unlocked)
@@ -271,6 +272,7 @@ static int	(*cmpf)(const char *, const char *);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "sort", HF_VERBOSE_TAKEN);
 	register int a;
 	char *arg;
 	struct field *p, *q;
@@ -1230,7 +1232,7 @@ loop:	if (mb_cur_max > 1) {
 		if(*p != '\n')
 			p++;
 		else goto ret;
-	} 
+	}
 	if (fp->posix && fp->n[j] == 0 && j == 1 && runs++ == 0) {
 		i = 1;
 		goto loop;

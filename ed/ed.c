@@ -78,6 +78,7 @@ static const char sccsid[] USED = "@(#)ed.sl	1.99 (gritter) 7/27/06";
 #include <wctype.h>
 #include <limits.h>
 #include <termios.h>
+#include "heirloom_flags.h"
 static int	FNSIZE;
 static int	LBSIZE;
 static int	RHSIZE;
@@ -278,6 +279,7 @@ static int	step(const char *, const char *);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "ed", HF_VERBOSE_TAKEN);
 	register int i;
 	void (*oldintr)(int);
 
@@ -784,7 +786,7 @@ address(void)
 		case ' ':
 		case '\t':
 			continue;
-	
+
 		case '+':
 			minus++;
 			if (a1==0)
@@ -797,7 +799,7 @@ address(void)
 			if (a1==0)
 				a1 = dot;
 			continue;
-	
+
 		case '?':
 		case '/':
 			compile(NULL, expbuf, &expbuf[ESIZE], c);
@@ -818,11 +820,11 @@ address(void)
 					error("search string not found");
 			}
 			break;
-	
+
 		case '$':
 			a1 = dol;
 			break;
-	
+
 		case '.':
 			a1 = dot;
 			break;
@@ -834,7 +836,7 @@ address(void)
 				if (names[c-'a'] == (*a1 & ~01))
 					break;
 			break;
-	
+
 		default:
 			peekc = c;
 			if (a1==0)
@@ -1451,7 +1453,7 @@ static char *
 getblock(long atl, long iof)
 {
 	register long bno, off;
-	
+
 	bno = (atl>>8)&BLKMSK;
 	off = (atl<<1)&0774;
 	if (bno >= BLKMSK) {

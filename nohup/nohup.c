@@ -49,6 +49,7 @@ static const char sccsid[] USED = "@(#)nohup.sl	1.11 (gritter) 5/29/05";
 #include	<signal.h>
 #include	<libgen.h>
 #include	<limits.h>
+#include "heirloom_flags.h"
 
 static char	*progname;		/* argv[0] to main() */
 static int	errorfd = 2;
@@ -145,6 +146,7 @@ create_nohup_out(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "nohup", 0);
 	int i;
 
 	progname = basename(argv[0]);

@@ -40,6 +40,7 @@ static const char sccsid[] USED = "@(#)rmdir.sl	1.10 (gritter) 5/29/05";
 #include	<stdlib.h>
 #include	<errno.h>
 #include	<libgen.h>
+#include "heirloom_flags.h"
 
 static unsigned	errcnt;			/* count of errors */
 static int	pflag;			/* remove parent directories */
@@ -114,6 +115,7 @@ doit(const char *path)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "rmdir", 0);
 	int i;
 
 #ifdef	__GLIBC__

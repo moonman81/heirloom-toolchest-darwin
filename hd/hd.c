@@ -49,6 +49,7 @@ static const char sccsid[] USED = "@(#)hd.sl	1.12 (gritter) 5/29/05";
 #include <limits.h>
 #include "atoll.h"
 #include "mbtowi.h"
+#include "heirloom_flags.h"
 
 #ifdef	__GLIBC__
 #ifdef	_IO_getc_unlocked
@@ -130,6 +131,7 @@ static char		*wcget(FILE *fp, wint_t *wc, int *len);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "hd", HF_VERBOSE_TAKEN);
 	FILE	*fp;
 	int	i, j;
 

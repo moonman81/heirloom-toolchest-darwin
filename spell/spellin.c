@@ -34,6 +34,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <locale.h>
+#include "heirloom_flags.h"
 #include "hash.h"
 #include "huff.h"
 
@@ -76,6 +77,7 @@ append(register uint32_t w1, register int32_t i)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "spell", 0);
 	int32_t h, k, d;
 	unsigned hu;
 	int32_t  i;

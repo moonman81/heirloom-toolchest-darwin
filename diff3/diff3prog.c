@@ -88,6 +88,7 @@ static const char sccsid[] USED = "@(#)/usr/lib/diff3prog.sl	1.9 (gritter) 5/29/
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
+#include "heirloom_flags.h"
 
 #if defined (__GLIBC__) && defined (_IO_getc_unlocked)
 #undef	getc
@@ -169,6 +170,7 @@ static void grownc(void);
 int
 main(int argc,char **argv)
 {
+	heirloom_flags(argc, argv, "diff3", HF_VERBOSE_TAKEN);
 	register int i,m,n;
         eflag=0; oflag=0;
 	if(argc > 1 && *argv[1]=='-') {
@@ -197,7 +199,7 @@ main(int argc,char **argv)
 		fprintf(stderr,"diff3: arg count\n");
 		exit(2);
 	}
-        if (oflag) { 
+        if (oflag) {
 		f1mark = mark("<<<<<<<",argc>=7?argv[6]:argv[3]);
 		f3mark = mark(">>>>>>>",argc>=8?argv[7]:argv[5]);
         }
@@ -519,7 +521,7 @@ static void
 repos(int nchar)
 {
 	register int i;
-	for(i=0;i<2;i++) 
+	for(i=0;i<2;i++)
 		fseek(fp[i], -nchar, SEEK_CUR);
 }
 
@@ -556,7 +558,7 @@ edscript(int n)
 	register int j,k;
 	char block[BUFSIZ];
 	for(n=n;n>0;n--) {
-                if (!oflag || !overlap[n]) 
+                if (!oflag || !overlap[n])
                         prange(&de[n].old);
                 else
                         printf("%da\n=======\n", de[n].old.to -1);
@@ -567,7 +569,7 @@ edscript(int n)
 				trouble();
 			fwrite(block, 1, j, stdout);
 		}
-                if (!oflag || !overlap[n]) 
+                if (!oflag || !overlap[n])
                         printf(".\nw\nq\n");
                 else {
                         printf("%s\n.\n",f3mark);

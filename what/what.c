@@ -51,6 +51,7 @@ static const char sccsid[] USED = "@(#)what.sl	1.12 (gritter) 4/14/07";
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include "heirloom_flags.h"
 
 #define MINUS '-'
 #define MINUS_S "-s"
@@ -69,9 +70,10 @@ static void	dowhat(FILE *);
 static int	trypat(FILE *,char *);
 
 
-int 
+int
 main(int argc, register char **argv)
 {
+	heirloom_flags(argc, argv, "what", HF_VERBOSE_TAKEN);
 	register int i;
 	register FILE *iop;
 	int current_optind, c;

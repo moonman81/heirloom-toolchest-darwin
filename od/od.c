@@ -52,6 +52,7 @@ static const char sccsid[] USED = "@(#)od.sl	1.26 (gritter) 5/29/05";
 #include	<limits.h>
 #include	"asciitype.h"
 #include	"atoll.h"
+#include "heirloom_flags.h"
 
 #ifdef	__GLIBC__
 #ifdef	_IO_getc_unlocked
@@ -949,6 +950,7 @@ setlimit(const char *s)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "od", HF_VERBOSE_TAKEN);
 	const char	optstring[] = ":A:bcCdDfFj:N:oOsSt:vxX";
 	int	i, newopt = 0;;
 

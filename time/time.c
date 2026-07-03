@@ -54,6 +54,7 @@ static const char sccsid[] USED = "@(#)time.sl	1.28 (gritter) 5/29/05";
 #include	<limits.h>
 #endif
 #include	<locale.h>
+#include "heirloom_flags.h"
 
 static int		pflag;		/* portable format */
 #undef	hz
@@ -376,6 +377,7 @@ timecmd(char **av)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "time", 0);
 	int i;
 
 	progname = basename(argv[0]);

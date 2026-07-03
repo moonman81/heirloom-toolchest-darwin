@@ -36,6 +36,7 @@
 #endif
 static const char sccsid[] USED = "@(#)psrinfo.sl	1.16 (gritter) 2/15/07";
 
+#include "heirloom_flags.h"
 #include	<sys/utsname.h>
 #include	<unistd.h>
 #include	<stdio.h>
@@ -328,6 +329,7 @@ usage(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "psrinfo", 0);
 	int i;
 
 #ifdef	__GLIBC__

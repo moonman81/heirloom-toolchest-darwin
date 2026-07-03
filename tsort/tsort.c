@@ -56,6 +56,7 @@ static const char sccsid[] USED = "@(#)tsort.sl	1.6 (gritter) 5/29/05";
 #include <stdlib.h>
 #include <libgen.h>
 #include "asciitype.h"
+#include "heirloom_flags.h"
 
 #if defined (__GLIBC__) && defined (_IO_getc_unlocked)
 #undef	getc
@@ -103,6 +104,7 @@ static char *token(char **, int *, FILE *);
 int
 main(int argc,char **argv)
 {
+	heirloom_flags(argc, argv, "tsort", 0);
 	register struct predlist *t;
 	FILE *input = stdin;
 	register struct nodelist *i, *j;
@@ -129,7 +131,7 @@ main(int argc,char **argv)
 			error("odd data",empty);
 		i = idx(precedes);
 		j = idx(follows);
-		if(i==j||present(i,j)) 
+		if(i==j||present(i,j))
 			continue;
 		t = malloc(sizeof(struct predlist));
 		t->nextpred = j->inedges;

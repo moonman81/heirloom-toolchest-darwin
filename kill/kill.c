@@ -37,6 +37,7 @@
 #include <libgen.h>
 #include <ctype.h>
 #include <errno.h>
+#include "heirloom_flags.h"
 
 #ifdef	SIGRTMIN
 #undef	NSIG
@@ -146,6 +147,7 @@ sendsig(const char *pp)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "kill", HF_VERBOSE_TAKEN);
 	int	i = 0;
 
 	progname = basename(argv[0]);

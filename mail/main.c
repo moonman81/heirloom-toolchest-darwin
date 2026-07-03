@@ -37,6 +37,7 @@
 
 #include "mail.h"
 #include <locale.h>
+#include "heirloom_flags.h"
 /*
  *	mail [ -ehpPqrtw ] [-x debuglevel] [ -f file ] [ -F user(s) ]
  *	mail -T file persons
@@ -46,6 +47,7 @@
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "mail", HF_VERBOSE_TAKEN);
 	register int i;
 	char *cptr, *p;
 	static char pn[] = "main";

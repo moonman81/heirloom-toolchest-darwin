@@ -78,6 +78,7 @@
 #include <unistd.h>
 #include <locale.h>
 #include <iblok.h>
+#include "heirloom_flags.h"
 /*
  * diff - driver and subroutines
  */
@@ -95,6 +96,7 @@ static void	Xadd(const char *);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "diff", HF_VERBOSE_TAKEN);
 	int	i, invalid = 0;
 
 	progname = basename(argv[0]);

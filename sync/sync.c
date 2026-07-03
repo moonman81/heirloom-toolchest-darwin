@@ -35,10 +35,12 @@
 static const char sccsid[] USED = "@(#)sync.sl	1.3 (gritter) 5/29/05";
 
 #include <unistd.h>
+#include "heirloom_flags.h"
 
 int
-main(void)
+main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "sync", 0);
 	sync();
 	return 0;
 }

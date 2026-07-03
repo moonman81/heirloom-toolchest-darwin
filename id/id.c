@@ -46,6 +46,7 @@ static const char sccsid[] USED = "@(#)id.sl	1.10 (gritter) 5/29/05";
 #include	<libgen.h>
 #include	<pwd.h>
 #include	<grp.h>
+#include "heirloom_flags.h"
 
 static int	aflag;			/* print supplementary GIDs */
 static int	nflag;			/* print names instead of numbers */
@@ -209,6 +210,7 @@ id(int me, uid_t uid, uid_t euid, gid_t gid, gid_t egid)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "id", HF_VERBOSE_TAKEN);
 #ifdef	SUS
 	const char	optstring[] = "aGgnru";
 #else

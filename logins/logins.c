@@ -48,6 +48,7 @@ static const char sccsid[] USED = "@(#)logins.sl	1.24 (gritter) 5/29/05";
 #endif	/* SHADOW_PWD */
 #include	<grp.h>
 #include	<libgen.h>
+#include "heirloom_flags.h"
 
 #define	MIN_USER_UID	100
 #define	DEFAULT_SH	"/bin/sh"
@@ -542,6 +543,7 @@ usage(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "logins", 0);
 	const char optstr[] = ":admopstuxg:l:";
 	int i;
 

@@ -87,6 +87,7 @@ char copyright[] =
 #include <libgen.h>
 #include <locale.h>
 #include <langinfo.h>
+#include "heirloom_flags.h"
 
 int	dbg	= 0;
 int	ldbg	= 0;
@@ -108,6 +109,7 @@ char *progname;
 extern int maxsym;
 int
 main(int argc, char **argv) {
+	heirloom_flags(argc, argv, "oawk", HF_VERBOSE_TAKEN);
 	setlocale(LC_COLLATE, "");
 	setlocale(LC_CTYPE, "");
 	setlocale(LC_NUMERIC, "C");

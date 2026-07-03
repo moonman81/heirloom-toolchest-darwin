@@ -60,6 +60,7 @@ static const char sccsid[] USED = "@(#)cp.sl	1.84 (gritter) 3/4/06";
 #include	"sfile.h"
 #include	"memalign.h"
 #include	"alloca.h"
+#include "heirloom_flags.h"
 
 #ifndef	S_IFDOOR
 #define	S_IFDOOR	0xD000		/* Solaris door */
@@ -219,7 +220,7 @@ static void
 freedslots(void)
 {
 	struct dslot *dp, *dn;
-	
+
 	for (dp = d0; dp; dp = dn) {
 		dn = dp->d_nxt;
 		freeislots(dp->d_isl);
@@ -1137,6 +1138,7 @@ getfl(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "cp", HF_VERBOSE_TAKEN);
 	struct stat dst, ust;
 	const char *optstring;
 	int (*statfn)(const char *, struct stat *);

@@ -52,6 +52,7 @@ static const char sccsid[] USED = "@(#)random.sl	1.3 (gritter) 5/29/05";
 #include <time.h>
 #include <libgen.h>
 #include <stdlib.h>
+#include "heirloom_flags.h"
 
 static const char	*progname;
 static int	sflag;
@@ -81,6 +82,7 @@ usage(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "random", 0);
 	char	*x;
 	time_t	t;
 	uint32_t	r;

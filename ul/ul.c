@@ -74,6 +74,7 @@ static const char sccsid[] USED = "@(#)ul.sl	1.13 (gritter) 5/27/07";
 #endif
 
 #include "iblok.h"
+#include "heirloom_flags.h"
 
 #define	IESC	'\033'
 #define	SO	'\016'
@@ -136,6 +137,7 @@ static void	initcap(void);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "ul", 0);
 	int c;
 	char *termtype;
 #ifdef	USE_TERMCAP

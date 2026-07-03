@@ -34,6 +34,7 @@
 #endif
 static const char sccsid[] USED = "@(#)su.sl	1.25 (gritter) 2/21/06";
 
+#include "heirloom_flags.h"
 #include	"config.h"
 #include	<sys/types.h>
 #include	<sys/wait.h>
@@ -446,6 +447,7 @@ authenticate(const char *name, const char *ncrypt)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "su", 0);
 #ifdef	PAM
 	pam_handle_t *pamh = NULL;
 	int ret;

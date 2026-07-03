@@ -50,6 +50,7 @@ static const char sccsid[] USED = "@(#)touch.sl	1.21 (gritter) 5/29/05";
 #include	<utime.h>
 #include	<ctype.h>
 #include	<time.h>
+#include "heirloom_flags.h"
 
 static unsigned	errcnt;			/* count of errors */
 static int	aflag;			/* select access time */
@@ -278,6 +279,7 @@ usage(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "touch", 0);
 	int i;
 
 #ifdef	__GLIBC__

@@ -45,6 +45,7 @@ static const char sccsid[] USED = "@(#)paste.sl	1.11 (gritter) 5/29/05";
 #include	<locale.h>
 
 #include	<mbtowi.h>
+#include "heirloom_flags.h"
 
 struct	file {
 	struct file	*f_nxt;
@@ -285,6 +286,7 @@ paste(char **args)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "paste", 0);
 	const char	optstring[] = ":d:s";
 	int	i;
 

@@ -40,6 +40,7 @@ static const char sccsid[] USED = "@(#)mesg.c	1.2 (gritter) 7/29/05";
 #include <stdlib.h>
 #include <libgen.h>
 #include <unistd.h>
+#include "heirloom_flags.h"
 
 static const char	*progname;
 static int		status;
@@ -63,6 +64,7 @@ smode(const char *tp, mode_t mode)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "mesg", 0);
 	int	f = 0;
 	char	*tp;
 	struct stat	st;

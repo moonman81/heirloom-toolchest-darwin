@@ -40,8 +40,9 @@ static const char sccsid[] USED = "@(#)split.sl	1.7 (gritter) 5/29/05";
 #include <libgen.h>
 #include <unistd.h>
 #include "atoll.h"
+#include "heirloom_flags.h"
 
-#if defined (__GLIBC__) 
+#if defined (__GLIBC__)
 #if defined (_IO_getc_unlocked)
 #undef	getc
 #define	getc(f)		_IO_getc_unlocked(f)
@@ -68,6 +69,7 @@ static void	*smalloc(size_t);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "split", 0);
 	int	i;
 
 	progname = basename(argv[0]);

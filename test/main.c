@@ -28,12 +28,14 @@
 
 #include "defs.h"
 #include <locale.h>
+#include "heirloom_flags.h"
 
 int	mb_cur_max;
 
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "test", HF_VERBOSE_TAKEN);
 	extern int	func(int, char **);
 	extern int	sysv3;
 

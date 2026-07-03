@@ -58,6 +58,7 @@ static const char sccsid[] USED = "@(#)join.sl	1.15 (gritter) 5/29/05";
 
 #include	"iblok.h"
 #include	"mbtowi.h"
+#include "heirloom_flags.h"
 
 enum {
 	F1 = 0,
@@ -108,6 +109,7 @@ usage(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "join", 0);
 	int i;
 	int n1, n2;
 	off_t top2 = 0, bot2;

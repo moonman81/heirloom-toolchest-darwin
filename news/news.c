@@ -53,6 +53,7 @@ static const char sccsid[] USED = "@(#)news.sl	1.11 (gritter) 5/29/05";
 
 #include	"iblok.h"
 #include	"oblok.h"
+#include "heirloom_flags.h"
 
 struct	item {
 	const char	*i_name;
@@ -297,6 +298,7 @@ allnews(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "news", 0);
 	const char	optstring[] = "ans";
 	const char	*home;
 	int	i;

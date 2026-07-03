@@ -39,6 +39,7 @@ static const char sccsid[] USED = "@(#)mkfifo.sl	1.4 (gritter) 5/29/05";
 #include	<string.h>
 #include	<libgen.h>
 #include	<errno.h>
+#include "heirloom_flags.h"
 
 static char	*progname;		/* argv[0] to main() */
 static int	errcnt;			/* count of errors */
@@ -72,6 +73,7 @@ mfifo(const char *path)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "mkfifo", 0);
 	const char	optstring[] = "m:";
 	int	i;
 

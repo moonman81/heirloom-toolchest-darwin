@@ -52,7 +52,7 @@ static const char sccsid[] USED = "@(#)csplit.sl	1.10 (gritter) 5/29/05";
 #include "sigset.h"
 #include "atoll.h"
 
-#if defined (__GLIBC__) 
+#if defined (__GLIBC__)
 #if defined (_IO_getc_unlocked)
 #undef	getc
 #define	getc(f)		_IO_getc_unlocked(f)
@@ -70,6 +70,7 @@ static const char sccsid[] USED = "@(#)csplit.sl	1.10 (gritter) 5/29/05";
 #endif
 
 #include <iblok.h>
+#include "heirloom_flags.h"
 
 static struct	arg {
 	long long	a_no;
@@ -111,6 +112,7 @@ static void	*scalloc(size_t, size_t);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "csplit", 0);
 	int	i, illegal = 0;
 	char	*fn;
 

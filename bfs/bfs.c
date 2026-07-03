@@ -60,6 +60,7 @@ static const char sccsid[] USED = "@(#)bfs.c	1.15 (gritter) 7/2/05";
 #include <limits.h>
 #include <errno.h>
 #include "sigset.h"
+#include "heirloom_flags.h"
 static jmp_buf env;
 
 #define	BRKTYP	long
@@ -178,6 +179,7 @@ static void *grow(void *ptr, size_t size, const char *msg);
 int
 main(int argc, char *argv[])
 {
+	heirloom_flags(argc, argv, "bfs", 0);
 	struct Comd comdstruct, *p;
 	setlocale(LC_CTYPE, "");
 	mb_cur_max = MB_CUR_MAX;

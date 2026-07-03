@@ -45,6 +45,7 @@ static const char sccsid[] USED = "@(#)tee.sl	1.10 (gritter) 5/29/05";
 #include	<libgen.h>
 #include	<signal.h>
 #include	<limits.h>
+#include "heirloom_flags.h"
 
 struct	file {
 	struct file	*f_nxt;
@@ -148,6 +149,7 @@ make(const char *fn, mode_t mode, int fd)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "tee", 0);
 	struct file	*f;
 	int	i;
 	mode_t	mode = O_WRONLY|O_CREAT|O_TRUNC;

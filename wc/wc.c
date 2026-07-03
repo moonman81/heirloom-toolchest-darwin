@@ -57,6 +57,7 @@ static const char sccsid[] USED = "@(#)wc.sl	1.42 (gritter) 5/29/05";
 #include	<iblok.h>
 #include	<blank.h>
 #include	<mbtowi.h>
+#include "heirloom_flags.h"
 
 static unsigned		errcnt;		/* count of errors */
 static int		cflag;		/* count bytes only */
@@ -316,6 +317,7 @@ usage(void)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "wc", HF_VERBOSE_TAKEN);
 	int c;
 	unsigned ac;
 

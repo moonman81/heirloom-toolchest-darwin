@@ -43,6 +43,7 @@ static const char sccsid[] USED = "@(#)pg.sl	2.66 (gritter) 8/14/05";
 #include <term.h>
 #endif
 #endif
+#include "heirloom_flags.h"
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
@@ -2247,6 +2248,7 @@ run(char **av, int ac)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "pg", 0);
 	int arg, i;
 	char *cp;
 

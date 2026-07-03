@@ -29,6 +29,7 @@
 #include	<libgen.h>
 #include	<errno.h>
 #include	<signal.h>
+#include "heirloom_flags.h"
 
 #if __GNUC__ >= 3 && __GNUC_MINOR__ >= 4 || __GNUC__ >= 4
 #define	USED	__attribute__ ((used))
@@ -48,6 +49,7 @@ static pid_t	procreate(int *notify);
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "setpgrp", 0);
 	pid_t	pid, ppid, pgid, sid;
 	pid_t	child = -1;
 	int	notify = -1, i;

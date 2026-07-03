@@ -52,6 +52,7 @@ static const char sccsid[] USED = "@(#)spellprog.c	2.5 (gritter) 6/25/05";
 #include <stdio.h>
 #include <ctype.h>
 #include <locale.h>
+#include "heirloom_flags.h"
 #include "hash.h"
 
 #if defined (__GLIBC__) && defined (_IO_getc_unlocked)
@@ -261,6 +262,7 @@ static FILE *file, *found;
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "spell", 0);
 	register char *ep, *cp;
 	register char *dp;
 	int fold;

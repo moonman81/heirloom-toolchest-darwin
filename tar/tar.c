@@ -106,6 +106,7 @@ static const char sccsid[] USED = "@(#)tar.sl	1.177 (gritter) 4/14/07";
 #include <asciitype.h>
 #include <atoll.h>
 #include <memalign.h>
+#include "heirloom_flags.h"
 
 #ifdef	__GLIBC__
 #ifdef	_IO_getc_unlocked
@@ -381,6 +382,7 @@ static int	utf8(const char *);
 int
 main(int argc, char *argv[])
 {
+	heirloom_flags(argc, argv, "tar", HF_VERBOSE_TAKEN);
 	char *cp;
 
 	progname = basename(argv[0]);
@@ -399,7 +401,7 @@ main(int argc, char *argv[])
 	defaults();
 	argv[argc] = 0;
 	argv++;
-	for (cp = *argv++; *cp; cp++) 
+	for (cp = *argv++; *cp; cp++)
 		switch(*cp) {
 		case 'f':
 			usefile = *argv++;

@@ -41,6 +41,7 @@ static const char sccsid[] USED = "@(#)pathchk.c	1.3 (gritter) 8/15/05";
 #include <unistd.h>
 #include <errno.h>
 #include <asciitype.h>
+#include "heirloom_flags.h"
 
 #ifndef	_POSIX_NAME_MAX
 #define	_POSIX_NAME_MAX	14
@@ -79,7 +80,7 @@ pathchk(char *name)
 							"\"%.*s\" of name "
 							"\"%s\" is not "
 							"searchable\n",
-						progname, 
+						progname,
 						np - name, name,
 						name);
 					status |= 1;
@@ -117,6 +118,7 @@ pathchk(char *name)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "pathchk", 0);
 	int	c;
 
 	progname = basename(argv[0]);

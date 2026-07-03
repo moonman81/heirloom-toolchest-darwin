@@ -48,6 +48,7 @@ static const char sccsid[] USED = "@(#)date.sl	1.26 (gritter) 1/22/06";
 #include	<locale.h>
 #include	<utmpx.h>
 #include	<langinfo.h>
+#include "heirloom_flags.h"
 
 static unsigned	errcnt;			/* count of errors */
 static int	bflag;			/* boot flag: don't write wtmp */
@@ -305,6 +306,7 @@ adjust(char *op)
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "date", 0);
 	const char optstring[] = ":a:bu";
 	char *adjustment = NULL;
 	int i;

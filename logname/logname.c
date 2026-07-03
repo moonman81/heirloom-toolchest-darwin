@@ -36,10 +36,12 @@ static const char sccsid[] USED = "@(#)logname.sl	1.3 (gritter) 5/29/05";
 
 #include <unistd.h>
 #include <stdio.h>
+#include "heirloom_flags.h"
 
 int
 main(int argc, char **argv)
 {
+	heirloom_flags(argc, argv, "logname", 0);
 	char	*lp;
 
 	if ((lp = getlogin()) == NULL) {
