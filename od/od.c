@@ -950,7 +950,7 @@ setlimit(const char *s)
 int
 main(int argc, char **argv)
 {
-	heirloom_flags(argc, argv, "od", HF_VERBOSE_TAKEN | HF_H_TAKEN);
+	heirloom_flags(argc, argv, "od", HF_VERBOSE_TAKEN);
 	const char	optstring[] = ":A:bcCdDfFj:N:oOsSt:vxX";
 	int	i, newopt = 0;;
 
